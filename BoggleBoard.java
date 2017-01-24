@@ -26,36 +26,14 @@ public class BoggleBoard {
 			}
 		}
 		if (buffer.contains('$')){
-			ArrayList<String> q = new ArrayList<>();
-			int count = 0;
-			for (int i = 0; i < buffer.size(); i ++){
-				if (buffer.get(i) == '$'){ 
-					count ++;
-					if (i < 4){
-						q.add("0" + i);
-					} else {
-						int x = (i - (i % 4)) / 4;
-						int y = i % 4;
-						q.add(Integer.toString(x) + Integer.toString(y));
-					}
-				}
-			}
 			for (int i = 0; i < board.length; i ++){
-				for (int j = 0; j < board[i].length; j ++){
-					for (int x = 0; x < count; x ++){
-						if (board[i][j] == '$'){
-							System.out.print("Qu");
-							System.out.print(" ");
-						} else {
-							if (!(i == q.get(count - 1).charAt(0)) && j == q.get(count - 1).charAt(1)){
-								count --;
-								System.out.print(board[i][j]);
-								System.out.print("  ");
-							} else {
-								System.out.print(board[i][j]);
-								System.out.print("  ");
-							}
-						}
+				for (int j = 0; j < board.length; j ++){
+					if (board[i][j] == '$'){
+						System.out.print("Qu");
+						System.out.print(" ");
+					} else {
+						System.out.print(board[i][j]);
+						System.out.print("  ");
 					}
 				}
 				System.out.println("");
@@ -70,6 +48,21 @@ public class BoggleBoard {
 			}
 		}
 	}
+
+	public boolean onBoard(String word){ // make sure that the input word is uppercase
+		for (int i = 0; i < board.length; i ++){
+			for (int j = 0; j < board[i].length; j ++){
+				boolean[][] visited = new boolean[4][4]; 
+				BogglePoint point = new BogglePoint(i, j);
+				int pos = 0;
+				if (onBoard_Internal(point, word.toCharArray(), pos, visited)){
+					return true;
+				} 
+			}
+		}
+		return false;
+	}
+
 
 	public boolean onBoard(String word){ // make sure that the input word is uppercase
 		for (int i = 0; i < board.length; i ++){
