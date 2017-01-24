@@ -1,4 +1,3 @@
-import java.util.Random;
 import java.util.ArrayList;
 
 public class BoggleBoard {
@@ -10,30 +9,69 @@ public class BoggleBoard {
 	private char[][] board = new char[4][4];
 
 	private void makeBoard() {
-		char[] vowels = new char[] { 'a', 'e', 'i', 'o', 'u' };
-		Random x = new Random();
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board[i].length; j++) {
-				if (x.nextInt(26) % 3 == 0) {
-					int buffer = x.nextInt(vowels.length);
-					board[i][j] = vowels[buffer];
-				} else {
-					board[i][j] = (char) (x.nextInt(26) + 'a');
-				}
+		BoggleCubeSet b = new BoggleCubeSet("BoggleCubes.txt");
+		b.reset();
+		for (int i = 0; i < 4; i ++){
+			for (int j = 0; j < 4; j ++){
+				board[i][j] = b.getCubeLetter();
 			}
 		}
 	}
 
 	public void printBoard() {
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board[i].length; j++) {
-				System.out.print(board[i][j]);
+		ArrayList<Character> buffer = new ArrayList<>();
+		for (int i = 0; i < board.length; i ++){
+			for (int j = 0; j < board[i].length; j ++){
+				buffer.add(board[i][j]);	
 			}
-			System.out.println("");
+		}
+		if (buffer.contains('$')){
+			ArrayList<String> q = new ArrayList<>();
+			int count = 0;
+			for (int i = 0; i < buffer.size(); i ++){
+				if (buffer.get(i) == '$'){ 
+					count ++;
+					if (i < 4){
+						q.add("0" + i);
+					} else {
+						int x = (i - (i % 4)) / 4;
+						int y = i % 4;
+						q.add(Integer.toString(x) + Integer.toString(y));
+					}
+				}
+			}
+			for (int i = 0; i < board.length; i ++){
+				for (int j = 0; j < board[i].length; j ++){
+					for (int x = 0; x < count; x ++){
+						if (board[i][j] == '$'){
+							System.out.print("Qu");
+							System.out.print(" ");
+						} else {
+							if (!(i == q.get(count - 1).charAt(0)) && j == q.get(count - 1).charAt(1)){
+								count --;
+								System.out.print(board[i][j]);
+								System.out.print("  ");
+							} else {
+								System.out.print(board[i][j]);
+								System.out.print("  ");
+							}
+						}
+					}
+				}
+				System.out.println("");
+			}
+		} else {
+			for (int i = 0; i < board.length; i++) {
+				for (int j = 0; j < board[i].length; j++){
+					System.out.print(board[i][j]);
+					System.out.print(" ");
+				}
+				System.out.println("");
+			}
 		}
 	}
-	
-	public boolean onBoard(String word){
+
+	public boolean onBoard(String word){ // make sure that the input word is uppercase
 		for (int i = 0; i < board.length; i ++){
 			for (int j = 0; j < board[i].length; j ++){
 				boolean[][] visited = new boolean[4][4]; 
@@ -46,8 +84,7 @@ public class BoggleBoard {
 		}
 		return false;
 	}
-	
-	
+
 	private boolean onBoard_Internal(BogglePoint point, char[] word, int pos, boolean[][] visited) { 
 		if (board[point.x][point.y] != word[pos]){
 			return false;
@@ -69,7 +106,7 @@ public class BoggleBoard {
 		visited[point.x][point.y] = false;
 		return false;
 	}
-	
+
 	private BogglePoint[] getAdjacent(BogglePoint point){
 		BogglePoint[] adjacent = new BogglePoint[8];
 		for (int i = 0; i < adjacent.length; i ++){
