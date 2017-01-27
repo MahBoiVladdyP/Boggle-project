@@ -35,7 +35,7 @@ public class BoggleCubeSet {
 
 	public void reset(){
 		checked.clear();
-		for (int i = 0; i < 15; i ++){
+		for (int i = 0; i < 16; i ++){
 			checked.add(false);
 		}
 		counter = 0;
@@ -46,15 +46,9 @@ public class BoggleCubeSet {
 	public char getCubeLetter(){
 		Random rand = new Random();
 		while (true){
-			int x = rand.nextInt(15);
+			int x = rand.nextInt(16);
 			if (!checked.get(x)){
-				System.out.println(x);
 				checked.set(x, true);
-				int y = rand.nextInt(6);
-				counter ++;
-				return rawData.get(x).charAt(y);
-			}
-			if (!checked.contains(false)){
 				int y = rand.nextInt(6);
 				counter ++;
 				return rawData.get(x).charAt(y);
