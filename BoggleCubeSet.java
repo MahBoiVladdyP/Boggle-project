@@ -38,17 +38,30 @@ public class BoggleCubeSet {
 		for (int i = 0; i < 15; i ++){
 			checked.add(false);
 		}
+		counter = 0;
 	}
 
-	private int counter = -1;
+	private int counter = 0;
 	
 	public char getCubeLetter(){
 		Random rand = new Random();
-		int y = rand.nextInt(6);
-		counter ++;
-		if (counter == 14){
-			return ' ';
+		while (true){
+			int x = rand.nextInt(15);
+			if (!checked.get(x)){
+				System.out.println(x);
+				checked.set(x, true);
+				int y = rand.nextInt(6);
+				counter ++;
+				return rawData.get(x).charAt(y);
+			}
+			if (!checked.contains(false)){
+				int y = rand.nextInt(6);
+				counter ++;
+				return rawData.get(x).charAt(y);
+			}
+			if (counter >= 17){
+				return ' ';
+			}
 		}
-		return rawData.get(counter).charAt(y);
 	}
 }
