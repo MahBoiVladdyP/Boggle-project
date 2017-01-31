@@ -64,21 +64,6 @@ public class BoggleBoard {
 		return false;
 	}
 
-
-	public boolean onBoard(String word){ // make sure that the input word is uppercase
-		for (int i = 0; i < board.length; i ++){
-			for (int j = 0; j < board[i].length; j ++){
-				boolean[][] visited = new boolean[4][4]; 
-				BogglePoint point = new BogglePoint(i, j);
-				int pos = 0;
-				if (onBoard_Internal(point, word.toCharArray(), pos, visited)){
-					return true;
-				} 
-			}
-		}
-		return false;
-	}
-
 	private boolean onBoard_Internal(BogglePoint point, char[] word, int pos, boolean[][] visited) { 
 		if (board[point.x][point.y] != word[pos]){
 			return false;
