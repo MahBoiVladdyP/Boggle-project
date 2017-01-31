@@ -103,4 +103,8 @@ public class BoggleBoard {
 		}
 		return adjacent;
 	}
+	public char getLetter(int i, int j){ 
+		char letter = board[i][j]; 
+		return letter; 
+		}
 }
