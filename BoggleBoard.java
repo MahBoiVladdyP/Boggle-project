@@ -49,7 +49,8 @@ public class BoggleBoard {
 		}
 	}
 
-	public boolean onBoard(String word){ // make sure that the input word is uppercase
+	public boolean onBoard(String word){ 
+		word = word.toUpperCase();
 		for (int i = 0; i < board.length; i ++){
 			for (int j = 0; j < board[i].length; j ++){
 				boolean[][] visited = new boolean[4][4]; 
