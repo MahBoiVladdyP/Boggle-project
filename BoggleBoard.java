@@ -103,4 +103,8 @@ public class BoggleBoard {
 		}
 		return adjacent;
 	}
+	
+	public char [][] getBoard(){
+		return board;
+	}
 }
