@@ -15,7 +15,7 @@ public class MainGUITest extends Application{
 	int lastPlayed=0;
 	int positionValue=0;
 	String word ="";
-	char temp;
+	//char temp;
 	int i;
 	int j;
 	ArrayList<Integer> playedSpots = new ArrayList<Integer>();//all the played positions
@@ -82,7 +82,7 @@ public class MainGUITest extends Application{
 			}
 		System.out.println("entered isAdjacent()");
 		if (letterCounter==0){//exception for first letter of a word, always allowed
-			System.out.println("letterCounter = 0, exception to isAdjacent()");
+			System.out.println("letterCounter = 0");
 			return true;
 		}
 		for (int i=0; i<8; i++){//runs through adjacent spots, checks for matching with current position
@@ -105,10 +105,11 @@ public class MainGUITest extends Application{
 	class EnterButtonHandler implements EventHandler<ActionEvent>{
 	  		  public void handle (ActionEvent e){
 	  			  
-	  			  if (word.length()>3){
+	  			  if (word.length()>2){
 	  				  recordWords.add(word);
 	  			  	  word = "";
 	  			  	  letterCounter=0;
+	  			  	  playedSpots.clear();
 	  			  	  System.out.println("word recorded, find more!");
 	  			  }
 	  			  else {
@@ -127,6 +128,7 @@ public class MainGUITest extends Application{
     		word = "";
     		letterCounter=0;
     		System.out.println("word cleared");
+    		playedSpots.clear();
     	}
     }
 	class ButtonHandler implements EventHandler<ActionEvent>{
