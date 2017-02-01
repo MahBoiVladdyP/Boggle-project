@@ -9,11 +9,11 @@ public class BoggleBoard {
 	private char[][] board = new char[4][4];
 
 	private void makeBoard() {
-		BoggleCubeSet b = new BoggleCubeSet("BoggleCubes.txt");
-		b.reset();
+		BoggleCubeSet cubeSet = new BoggleCubeSet("BoggleCubes.txt");
+		cubeSet.reset();
 		for (int i = 0; i < 4; i ++){
 			for (int j = 0; j < 4; j ++){
-				board[i][j] = b.getCubeLetter();
+				board[i][j] = cubeSet.getCubeLetter();
 			}
 		}
 	}
@@ -42,7 +42,7 @@ public class BoggleBoard {
 			for (int i = 0; i < board.length; i++) {
 				for (int j = 0; j < board[i].length; j++){
 					System.out.print(board[i][j]);
-					System.out.print(" ");
+					System.out.print("  ");
 				}
 				System.out.println("");
 			}
@@ -103,8 +103,4 @@ public class BoggleBoard {
 		}
 		return adjacent;
 	}
-	public char getLetter(int i, int j){ 
-		char letter = board[i][j]; 
-		return letter; 
-		}
 }
