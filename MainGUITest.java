@@ -53,8 +53,9 @@ public class MainGUITest extends Application{
 			for (j = 0; j < 4; j++)
 			{
 				//temp=String.valueOf((char)((rand.nextInt(26)+1) + 64));
-	    	   	char [][] board=boggleBoard.getBoard();//get board from Winston's BoggleBoard
-				Button button = new Button(String.valueOf(board[i][j]));
+	    	   	char letter=boggleBoard.getLetter(i, j);//get board from Winston's BoggleBoard
+				Button button = new Button(String.valueOf(letter));
+				
 				bList.add(button);
 				gridpane.add(button, i, j);
 				button.setMaxWidth(40);
@@ -67,14 +68,14 @@ public class MainGUITest extends Application{
 	    clearWords.setOnAction(new ClearWordsHandler());
 	}
 	private boolean isAdjacent(){//if true, no conflict. if false, button can't be pressed
-			spots[0]=lastPlayed-11;
-			spots[1]=lastPlayed-1;
-			spots[2]=lastPlayed+9;
-			spots[3]=lastPlayed-10;
-			spots[4]=lastPlayed+10;
-			spots[5]=lastPlayed-9;
-			spots[6]=lastPlayed+1;
-			spots[7]=lastPlayed+11;
+			spots[0]=lastPlayed-11;//top left corner
+			spots[1]=lastPlayed-1;//straight above
+			spots[2]=lastPlayed+9;//top right corner
+			spots[3]=lastPlayed-10;//left
+			spots[4]=lastPlayed+10;//right
+			spots[5]=lastPlayed-9;//bottom left corner
+			spots[6]=lastPlayed+1;//straight below
+			spots[7]=lastPlayed+11;//bottom right corner
 			System.out.println("Adjacent spots to " + lastPlayed + " are: ");
 			for (int i=0; i<8; i++){
 				System.out.print(spots[i] + " ");
@@ -97,6 +98,9 @@ public class MainGUITest extends Application{
 	public static Button getButton (int x){
 
 		return bList.get(x);
+	}
+	public String getWord(){
+		return word;
 	}
 	class EnterButtonHandler implements EventHandler<ActionEvent>{
 	  		  public void handle (ActionEvent e){
