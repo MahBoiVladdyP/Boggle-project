@@ -107,4 +107,8 @@ public class BoggleBoard {
 	public char [][] getBoard(){
 		return board;
 	}
+	
+	public char getLetter(int i, int j){
+		return board[i][j];
+	}
 }
