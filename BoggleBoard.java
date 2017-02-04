@@ -7,6 +7,7 @@ public class BoggleBoard {
 	}
 
 	private char[][] board = new char[4][4];
+	ArrayList<String> words = new ArrayList<>();
 
 	private void makeBoard() {
 		BoggleCubeSet cubeSet = new BoggleCubeSet("BoggleCubes.txt");
@@ -110,5 +111,16 @@ public class BoggleBoard {
 	
 	public char getLetter(int i, int j){
 		return board[i][j];
+	}
+	
+	public void addWord(String word){
+		words.add(word);
+	}
+	
+	public boolean checkWord(String word){
+		if (words.contains(word)){
+			return false;
+		}
+		return true;
 	}
 }
