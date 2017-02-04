@@ -10,7 +10,6 @@ import javafx.event.*;
 import javafx.geometry.*;
 import javafx.collections.*;
 public class MainGUITest extends Application{
-	int letterCounter=0;
 	int spots [] = new int [8];
 	int lastPlayed=0;
 	int positionValue=0;
@@ -97,7 +96,7 @@ public class MainGUITest extends Application{
 			spots[5]=lastPlayed-9;//bottom left corner
 			spots[6]=lastPlayed+1;//straight below
 			spots[7]=lastPlayed+11;//bottom right corner
-		if (letterCounter==0){//exception for first letter of a word, always allowed
+		if (word.length()==0){//exception for first letter of a word, always allowed
 			System.out.println("First letter of the word!");
 			return true;
 		}
@@ -121,7 +120,6 @@ public class MainGUITest extends Application{
 	  			  if (word.length()>2){
 	  				  recordWords.add(word);
 	  			  	  word = "";
-	  			  	  letterCounter=0;
 	  			  	  playedSpots.clear();
 	  			  	  System.out.println("Word recorded! Nice job!");
 	  			  	  displayError.setText("Nice job!");
@@ -136,6 +134,7 @@ public class MainGUITest extends Application{
 	  				  System.out.println("word too short xd");
 	  				  displayError.setText("Word too short!");
 	  			  	  word = "";
+	  			  	  playedSpots.clear();
 	  			  }
 	  		  }
 	  	  }
@@ -147,7 +146,6 @@ public class MainGUITest extends Application{
     class ClearWordsHandler implements EventHandler<ActionEvent>{
     	public void handle (ActionEvent e){
     		word = "";
-    		letterCounter=0;
     		System.out.println("word cleared");
     		playedSpots.clear();
     	}
@@ -167,10 +165,9 @@ public class MainGUITest extends Application{
 				System.out.println("word is: " + word);
 				playedSpots.add(positionValue);
 				lastPlayed=positionValue;
-				letterCounter+=1;
 				displayError.setText("");
 				displayWord.setText(word);
-				System.out.println("letterCounter = " + letterCounter);
+				System.out.println("wordlength = " + word.length());
 			}
 			else{
 				System.out.println("Illegal Move");
