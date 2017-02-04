@@ -119,8 +119,8 @@ public class BoggleBoard {
 	
 	public boolean checkWord(String word){
 		if (words.contains(word)){
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 	}
 }
