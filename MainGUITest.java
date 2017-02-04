@@ -66,7 +66,13 @@ public class MainGUITest extends Application{
 			for (j = 0; j < 4; j++)
 			{
 				char letter=boggleBoard.getLetter(i, j);//get board from Winston's BoggleBoard
-				Button button = new Button(String.valueOf(letter));
+				Button button = new Button(String.valueOf(""));
+				if (letter=='$'){
+					button.setText(String.valueOf("QU"));
+				}
+				else{
+					button.setText(String.valueOf(letter));
+				}
 				//temp=String.valueOf((char)((rand.nextInt(26)+1) + 64));
 	    	    //char letter=boggleBoard.getLetter(i, j);//get board from Winston's BoggleBoard
 				//Button button = new Button(String.valueOf(temp));
