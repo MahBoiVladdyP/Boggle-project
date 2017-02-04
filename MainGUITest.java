@@ -15,9 +15,12 @@ public class MainGUITest extends Application{
 	int lastPlayed=0;
 	int positionValue=0;
 	String word ="";
-	//char temp;
+	String temp;
 	int i;
 	int j;
+	Label displayError = new Label("");//display error in GUI
+	Label displayWord = new Label("");//display word in GUI
+	Label allWords = new Label(""); //display all words in GUI
 	ArrayList<Integer> playedSpots = new ArrayList<Integer>();//all the played positions
  	GridPane gridpane = new GridPane();
 	static ArrayList <Button> bList = new ArrayList<>();
@@ -35,26 +38,38 @@ public class MainGUITest extends Application{
 		myStage.setScene(scene);
 		myStage.show();
 		Label credits = new Label("© copyright no rights reserved");
-		Label credits2= new Label("Anthony, Daniel, Tyron, Winston ");
-		gridpane.add(credits, 6, 4);
-		gridpane.add(credits2, 6, 5);
+		Label credits2 = new Label("Anthony, Daniel, Tyron, Winston ");
+		Label displayWordTitle = new Label("Your word: ");		
+		Label allWordsTitle = new Label("You've found: ");
 		
-		Random rand = new Random();
+		//TextField textfield1 = new TextField("");
+		gridpane.add(credits, 7, 6);
+		gridpane.add(credits2, 7, 7);
+		gridpane.add(displayWordTitle, 5, 0);
+		gridpane.add(displayError, 5, 2);
+		gridpane.add(displayWord, 5, 1);		
+		gridpane.add(allWordsTitle,  5,  7);
+		gridpane.add(allWords, 5, 8);
+		
+		//Random rand = new Random();
 		bList.clear();
 		 //Enter button
 	       Button enterButton = new Button(String.valueOf("Enter"));
 	       gridpane.add(enterButton, 4, 4);
 	       //Show words button, used for sake of testing ArrayList
-	       Button showFoundWords = new Button(String.valueOf("Show Found Words"));
-	       gridpane.add(showFoundWords, 5, 5);
+	       /*Button showFoundWords = new Button(String.valueOf("Show Found Words"));
+	       gridpane.add(showFoundWords, 5, 5);*/
 	       Button clearWords = new Button(String.valueOf("Clear"));
 	       gridpane.add(clearWords,  4, 5);
-	      for (i = 0; i < 4; i++){
+	    
+	       for (i = 0; i < 4; i++){
 			for (j = 0; j < 4; j++)
 			{
-				//temp=String.valueOf((char)((rand.nextInt(26)+1) + 64));
-	    	   	char letter=boggleBoard.getLetter(i, j);//get board from Winston's BoggleBoard
+				char letter=boggleBoard.getLetter(i, j);//get board from Winston's BoggleBoard
 				Button button = new Button(String.valueOf(letter));
+				//temp=String.valueOf((char)((rand.nextInt(26)+1) + 64));
+	    	    //char letter=boggleBoard.getLetter(i, j);//get board from Winston's BoggleBoard
+				//Button button = new Button(String.valueOf(temp));
 				
 				bList.add(button);
 				gridpane.add(button, i, j);
@@ -64,7 +79,7 @@ public class MainGUITest extends Application{
 			}
 		}
 		enterButton.setOnAction(new EnterButtonHandler());
-	    showFoundWords.setOnAction(new ShowFoundWordsHandler());
+	    //showFoundWords.setOnAction(new ShowFoundWordsHandler());
 	    clearWords.setOnAction(new ClearWordsHandler());
 	}
 	private boolean isAdjacent(){//if true, no conflict. if false, button can't be pressed
@@ -76,23 +91,16 @@ public class MainGUITest extends Application{
 			spots[5]=lastPlayed-9;//bottom left corner
 			spots[6]=lastPlayed+1;//straight below
 			spots[7]=lastPlayed+11;//bottom right corner
-			System.out.println("Adjacent spots to " + lastPlayed + " are: ");
-			for (int i=0; i<8; i++){
-				System.out.print(spots[i] + " ");
-			}
-		System.out.println("entered isAdjacent()");
 		if (letterCounter==0){//exception for first letter of a word, always allowed
-			System.out.println("letterCounter = 0");
+			System.out.println("First letter of the word!");
 			return true;
 		}
 		for (int i=0; i<8; i++){//runs through adjacent spots, checks for matching with current position
 			System.out.println(spots[i] + "=?="+ positionValue);
 			if (spots[i]==positionValue){
-				System.out.println("true, is adjacent");
 				return true;
 			}
 		}
-		System.out.println("false, not adjacent");
 		return false;
 	}
 	public static Button getButton (int x){
@@ -104,25 +112,32 @@ public class MainGUITest extends Application{
 	}
 	class EnterButtonHandler implements EventHandler<ActionEvent>{
 	  		  public void handle (ActionEvent e){
-	  			  
 	  			  if (word.length()>2){
 	  				  recordWords.add(word);
 	  			  	  word = "";
 	  			  	  letterCounter=0;
 	  			  	  playedSpots.clear();
-	  			  	  System.out.println("word recorded, find more!");
+	  			  	  System.out.println("Word recorded! Nice job!");
+	  			  	  displayError.setText("Nice job!");
+	  			  	  String displayWordsString="";
+	  			  	  for (int k = 0; k<recordWords.size(); k++){
+	  			  		  displayWordsString+=recordWords.get(k);
+	  			  		  displayWordsString+=("\n");
+	  			  	  }
+	  			  	  allWords.setText(displayWordsString);
 	  			  }
 	  			  else {
 	  				  System.out.println("word too short xd");
+	  				  displayError.setText("Word too short!");
 	  			  	  word = "";
 	  			  }
 	  		  }
 	  	  }
-    class ShowFoundWordsHandler implements EventHandler<ActionEvent>{
+   /* class ShowFoundWordsHandler implements EventHandler<ActionEvent>{
 			  public void handle (ActionEvent e){
 				   System.out.println(recordWords);
 	  		  }
-	  	  }
+	  	  }*/
     class ClearWordsHandler implements EventHandler<ActionEvent>{
     	public void handle (ActionEvent e){
     		word = "";
@@ -137,26 +152,24 @@ public class MainGUITest extends Application{
 			Button b = (Button) e.getSource();
 			i=GridPane.getRowIndex(b);
 			j=GridPane.getColumnIndex(b);
-		/*	BogglePoint point = new BogglePoint(i,j);
-			BogglePoint[] adjacentLetters = new BogglePoint[8];
-			adjacentLetters = boggleBoard.getAdjacent(point);
-			System.out.println("Adjacent: ");
-			for (int k=0;  k<8; k++){
-				System.out.println(adjacentLetters[k] + " ");
-			}*/
+		
 			positionValue=(i * 10) + j;
 			System.out.println("positionValue = " + positionValue);
 			if (isAdjacent()==true && !playedSpots.contains(positionValue)){
-				System.out.println("isAdjacent() = true");
+				
 				word+=b.getText();
 				System.out.println("word is: " + word);
 				playedSpots.add(positionValue);
 				lastPlayed=positionValue;
 				letterCounter+=1;
+				displayError.setText("");
+				displayWord.setText(word);
 				System.out.println("letterCounter = " + letterCounter);
 			}
-			else
-				System.out.println("error xd");
+			else{
+				System.out.println("Illegal Move");
+				displayError.setText("Illegal Move");
+			}
 		}
 	}
 	public static void main(String []args){
