@@ -123,4 +123,8 @@ public class BoggleBoard {
 		}
 		return false;
 	}
+	
+	public ArrayList<String> returnWords(){
+		return words;	
+	}
 }
