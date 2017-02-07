@@ -117,22 +117,24 @@ public class MainGUITest extends Application{
 	}
 	class EnterButtonHandler implements EventHandler<ActionEvent>{
 	  		  public void handle (ActionEvent e){
-	  			  if (word.length()>2){
-	  				  recordWords.add(word);
+	  			  if (word.length()>2 && boggleBoard.checkWord(word)==false){
+	  				  boggleBoard.addWord(word);
 	  			  	  word = "";
 	  			  	  playedSpots.clear();
 	  			  	  System.out.println("Word recorded! Nice job!");
 	  			  	  displayError.setText("Nice job!");
 	  			  	  String displayWordsString="";
-	  			  	  for (int k = 0; k<recordWords.size(); k++){
-	  			  		  displayWordsString+=recordWords.get(k);
+	  			  	  ArrayList<String> returnedWords = new ArrayList<String>();
+	  			  	  returnedWords= boggleBoard.returnWords();
+	  			  	  for (int k = 0; k<returnedWords.size(); k++){
+	  			  		  displayWordsString+=returnedWords.get(k);
 	  			  		  displayWordsString+=("\n");
 	  			  	  }
 	  			  	  allWords.setText(displayWordsString);
 	  			  }
 	  			  else {
-	  				  System.out.println("word too short xd");
-	  				  displayError.setText("Word too short!");
+	  				  System.out.println("word too short or word existing");
+	  				  displayError.setText("Word too short or already exists!");
 	  			  	  word = "";
 	  			  	  playedSpots.clear();
 	  			  }
