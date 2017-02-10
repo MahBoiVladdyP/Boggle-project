@@ -25,7 +25,7 @@ public class Dictionary
 			System.out.println(wordList.get(i));
 		}
 		
-		for(int i = 0; i < wordList.size(); i++)//Checks to see if the passsed string is in the dictionary 
+		for(int i = 0; i < wordList.size(); i++)//Checks to see if the passed string is in the dictionary 
 		{
 			System.out.print("Enter a word ");
 			String a = inputs.nextLine();
@@ -97,27 +97,6 @@ public class Dictionary
 			return true; 
 		return false;
 	}
-	
-	/*private static ArrayList<String> loadStrings(String fileName) 
-	{
-		String line = "";
-		ArrayList<String> toReturn = new ArrayList<String>();
-
-		try (BufferedReader br = new BufferedReader(new FileReader(fileName))) 
-		{
-
-			while ((line = br.readLine()) != null) 
-			{
-				toReturn.add(line);
-			}
-
-		} catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
-		return toReturn;
-	}
-	*/
 	
 	    
 	 
