@@ -34,15 +34,7 @@ public class MainGUITest extends Application{
 
 	public void start(Stage myStage){
 
-		if(rb.isOver()==true){
-			System.out.println("Game Over Man");
-			try {
-				Thread.sleep(3000);
-			} catch(InterruptedException ex) {
-				Thread.currentThread().interrupt();
-			}
-			System.exit(0);
-		}
+		
 
 		Scene scene= new Scene(gridpane, 700, 400);
 		gridpane.setPadding(new Insets(30));
@@ -84,7 +76,7 @@ public class MainGUITest extends Application{
 				char letter=boggleBoard.getLetter(i, j);//get board from Winston's BoggleBoard
 				Button button = new Button(String.valueOf(""));
 				if (letter=='$'){
-					button.setText(String.valueOf("QU"));
+					button.setText(String.valueOf("Qu"));
 				}
 				else{
 					button.setText(String.valueOf(letter));
@@ -105,6 +97,7 @@ public class MainGUITest extends Application{
 		clearWords.setOnAction(new ClearWordsHandler());
 	}
 	private boolean isAdjacent(){//if true, no conflict. if false, button can't be pressed
+		
 		spots[0]=lastPlayed-11;//top left corner
 		spots[1]=lastPlayed-1;//straight above
 		spots[2]=lastPlayed+9;//top right corner
@@ -135,12 +128,23 @@ public class MainGUITest extends Application{
 	class EnterButtonHandler implements EventHandler<ActionEvent>{
 		public void handle (ActionEvent e){
 
+			if(rb.isOver()==true){
+				System.out.println("Game Over Man");
+				try {
+					Thread.sleep(100);
+				} catch(InterruptedException ex) {
+					Thread.currentThread().interrupt();
+				}
+				Platform.exit();
+			}
+			
 			if(d.isWord(word)==false){
 
 				System.out.println("Not A Real Word");
 				displayError.setText("Not A Real Word");
 				word = "";
 				playedSpots.clear();
+				
 				return;
 			}		
 
@@ -177,8 +181,6 @@ public class MainGUITest extends Application{
 					System.out.println("word recorded, find more!");
 
 				}
-				
-				
 				return;
 			}
 	
@@ -190,6 +192,7 @@ public class MainGUITest extends Application{
 				playedSpots.clear();
 				return;
 			}
+			
 		}
 	}
 
@@ -198,11 +201,15 @@ public class MainGUITest extends Application{
 			word = "";
 			System.out.println("word cleared");
 			playedSpots.clear();
+			displayError.setText("");
+			displayWord.setText("");
 		}
 	}
 	class ButtonHandler implements EventHandler<ActionEvent>{
 		public void handle(ActionEvent e){
 
+			
+			
 			Button b = (Button) e.getSource();
 			i=GridPane.getRowIndex(b);
 			j=GridPane.getColumnIndex(b);
@@ -229,5 +236,6 @@ public class MainGUITest extends Application{
 
 	public static void main(String []args){
 		launch(args);
+		
 	}
 }
