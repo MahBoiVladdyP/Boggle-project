@@ -12,7 +12,6 @@ import javafx.collections.*;
 public class MainGUITest extends Application{
 	int spots [] = new int [8];
 	int lastPlayed=0;
-	int positionValue=0;
 	String word ="";
 	String temp;
 	int i;
@@ -44,7 +43,7 @@ public class MainGUITest extends Application{
 		myStage.setTitle("Hi Trung");
 		myStage.setScene(scene);
 		myStage.show();
-		Label credits = new Label("© copyright no rights reserved");
+		Label credits = new Label("Â© copyright no rights reserved");
 		Label credits2 = new Label("Anthony, Daniel, Tyron, Winston ");
 		Label displayWordTitle = new Label("Your word: ");		
 		Label allWordsTitle = new Label("You've found: ");
@@ -96,7 +95,7 @@ public class MainGUITest extends Application{
 		//showFoundWords.setOnAction(new ShowFoundWordsHandler());
 		clearWords.setOnAction(new ClearWordsHandler());
 	}
-	private boolean isAdjacent(){//if true, no conflict. if false, button can't be pressed
+	private boolean isAdjacent(int currentPosition){//if true, no conflict. if false, button can't be pressed
 		
 		spots[0]=lastPlayed-11;//top left corner
 		spots[1]=lastPlayed-1;//straight above
@@ -111,8 +110,8 @@ public class MainGUITest extends Application{
 			return true;
 		}
 		for (int i=0; i<8; i++){//runs through adjacent spots, checks for matching with current position
-			System.out.println(spots[i] + "=?="+ positionValue);
-			if (spots[i]==positionValue){
+			System.out.println(spots[i] + "=?="+ currentPosition);
+			if (spots[i]==currentPosition){
 				return true;
 			}
 		}
@@ -214,14 +213,14 @@ public class MainGUITest extends Application{
 			i=GridPane.getRowIndex(b);
 			j=GridPane.getColumnIndex(b);
 
-			positionValue=(i * 10) + j;
-			System.out.println("positionValue = " + positionValue);
-			if (isAdjacent()==true && !playedSpots.contains(positionValue)){
+			int currentPosition=(i * 10) + j;
+			System.out.println("currentPosition = " + currentPosition);
+			if (isAdjacent(currentPosition)==true && !playedSpots.contains(currentPosition)){
 
 				word+=b.getText();
 				System.out.println("word is: " + word);
-				playedSpots.add(positionValue);
-				lastPlayed=positionValue;
+				playedSpots.add(currentPosition);
+				lastPlayed=currentPosition;
 				displayError.setText("");
 				displayWord.setText(word);
 				System.out.println("wordlength = " + word.length());
