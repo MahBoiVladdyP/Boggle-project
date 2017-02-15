@@ -5,7 +5,13 @@ import javafx.application.*;
 import javafx.scene.*;
 import javafx.stage.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.scene.control.*;
+import javafx.scene.effect.GaussianBlur;
 import javafx.event.*;
 import javafx.geometry.*;
 import javafx.collections.*;
@@ -18,7 +24,7 @@ public class MainGUITest extends Application{
 	int j;
 	Label displayError = new Label("");//display error in GUI
 	Label displayWord = new Label("");//display word in GUI
-	Label allWords = new Label(""); //display all words in GUI
+	TextArea allWords = new TextArea(""); //display all words in GUI
 	Label displayScore = new Label("");//display score in GUI
 	ArrayList<Integer> playedSpots = new ArrayList<Integer>();//all the played positions
 	GridPane gridpane = new GridPane();
@@ -40,14 +46,21 @@ public class MainGUITest extends Application{
 		gridpane.setHgap(10);
 		gridpane.setVgap(10);
 
-		myStage.setTitle("Hi Trung");
+		myStage.setTitle("Boggle Beta");
 		myStage.setScene(scene);
 		myStage.show();
-		Label credits = new Label("© copyright no rights reserved");
+		Text t = new Text ("Stroke and Fill");
+		t.setId("fancytext");
+		
+		Label credits = new Label("© copyright all rights reserved");
 		Label credits2 = new Label("Anthony, Daniel, Tyron, Winston ");
 		Label displayWordTitle = new Label("Your word: ");		
 		Label allWordsTitle = new Label("You've found: ");
-
+		Label Title = new Label("Boggle Beta");
+		Title.setTextFill(Color.GREEN);
+		//credits2.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
+		Title.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+		Title.setEffect(new GaussianBlur());
 		//TextField textfield1 = new TextField("");
 		gridpane.add(credits, 7, 6);
 		gridpane.add(credits2, 7, 7);
@@ -57,7 +70,8 @@ public class MainGUITest extends Application{
 		gridpane.add(allWordsTitle,  5,  7);
 		gridpane.add(allWords, 5, 8);
 		gridpane.add(displayScore, 5, 3);
-
+		gridpane.add(Title,  7,  0);
+		allWords.setMaxWidth(80);
 		//Random rand = new Random();
 		bList.clear();
 		//Enter button
@@ -232,7 +246,7 @@ public class MainGUITest extends Application{
 		}
 	}
 
-
+	
 	public static void main(String []args){
 		launch(args);
 		
