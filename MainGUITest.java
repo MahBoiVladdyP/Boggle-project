@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 import javafx.application.*;
 import javafx.scene.*;
@@ -11,10 +10,11 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.control.*;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.effect.InnerShadow;
 import javafx.event.*;
 import javafx.geometry.*;
-import javafx.collections.*;
 public class MainGUITest extends Application{
 	int spots [] = new int [8];
 	int lastPlayed=0;
@@ -49,8 +49,11 @@ public class MainGUITest extends Application{
 		myStage.setTitle("Boggle Beta");
 		myStage.setScene(scene);
 		myStage.show();
-		Text t = new Text ("Stroke and Fill");
-		t.setId("fancytext");
+		/*Text t = new Text ("Stroke and Fill");
+		t.setId("fancytext");*/
+		DropShadow ds = new DropShadow();
+		ds.setOffsetY(3.0f);
+		ds.setColor(Color.color(0.4f, 0.4f, 0.4f));
 		
 		Label credits = new Label("© copyright all rights reserved");
 		Label credits2 = new Label("Anthony, Daniel, Tyron, Winston ");
@@ -59,18 +62,27 @@ public class MainGUITest extends Application{
 		Label Title = new Label("Boggle Beta");
 		Title.setTextFill(Color.GREEN);
 		//credits2.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
-		Title.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
-		Title.setEffect(new GaussianBlur());
-		//TextField textfield1 = new TextField("");
+		Title.setFont(Font.font("Curlz MT", FontWeight.BOLD, 40));
+		//Title.setEffect(new GaussianBlur());
+		Title.setEffect(ds);
+		TextField textfield1 = new TextField("");
+		
+		displayWordTitle.setTextFill(Color.BLUE);
+		displayWordTitle.setFont(Font.font("Times New Roman", FontPosture.ITALIC, 20));
+		displayScore.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 20));
+		displayScore.setTextFill(Color.ORANGE);
+		displayWord.setTextFill(Color.BLUEVIOLET);
+		displayWord.setFont(Font.font("Times New Roman", FontWeight.BOLD, 30));
+		
 		gridpane.add(credits, 7, 6);
 		gridpane.add(credits2, 7, 7);
-		gridpane.add(displayWordTitle, 5, 0);
-		gridpane.add(displayError, 5, 2);
-		gridpane.add(displayWord, 5, 1);		
+		gridpane.add(displayWordTitle, 7, 1);
+		gridpane.add(displayError, 7, 2);
+		gridpane.add(displayWord, 7, 3);		
 		gridpane.add(allWordsTitle,  5,  7);
 		gridpane.add(allWords, 5, 8);
 		gridpane.add(displayScore, 5, 3);
-		gridpane.add(Title,  7,  0);
+		gridpane.add(Title,  5,  0);
 		allWords.setMaxWidth(80);
 		//Random rand = new Random();
 		bList.clear();
@@ -90,18 +102,24 @@ public class MainGUITest extends Application{
 				Button button = new Button(String.valueOf(""));
 				if (letter=='$'){
 					button.setText(String.valueOf("Qu"));
+					button.setTextFill(Color.BLUEVIOLET);
+					button.setFont(Font.font("Times New Roman", FontWeight.BOLD, 20));
 				}
 				else{
 					button.setText(String.valueOf(letter));
+					button.setTextFill(Color.BLUEVIOLET);
+					button.setFont(Font.font("Times New Roman", FontWeight.BOLD, 20));
 				}
 				//temp=String.valueOf((char)((rand.nextInt(26)+1) + 64));
 				//char letter=boggleBoard.getLetter(i, j);//get board from Winston's BoggleBoard
 				//Button button = new Button(String.valueOf(temp));
 
 				bList.add(button);
-				gridpane.add(button, i, j);
-				button.setMaxWidth(40);
-				button.setMinWidth(40);
+				gridpane.add(button, i, j+1);
+				button.setMaxWidth(60);
+				button.setMinWidth(60);
+				button.setMinHeight(60);
+				button.setMaxHeight(60);
 				button.setOnAction(new ButtonHandler());
 			}
 		}
@@ -180,7 +198,7 @@ public class MainGUITest extends Application{
 					System.out.println("Word recorded! Nice job!");
 					displayError.setText("Nice job!");
 					System.out.println("score is:" + score);
-					displayScore.setText("Your Score is: " + Integer.toString(score));
+					displayScore.setText("Score: " + Integer.toString(score));
 					String displayWordsString="";
 	  			  	ArrayList<String> returnedWords = new ArrayList<String>();
 	  			  	returnedWords= boggleBoard.returnWords();
