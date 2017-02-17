@@ -1,6 +1,9 @@
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 import javafx.application.*;
+import javafx.concurrent.Task;
 import javafx.scene.*;
 import javafx.stage.*;
 import javafx.scene.layout.*;
@@ -31,15 +34,13 @@ public class MainGUITest extends Application{
 	static ArrayList <Button> bList = new ArrayList<>();
 	ArrayList <String> recordWords = new ArrayList <String>();
 	BoggleBoard boggleBoard = new BoggleBoard();
-	ReminderBeep rb = new ReminderBeep(10);
 	int score  = 0;
 	Dictionary d = new Dictionary();
 
 
-
 	public void start(Stage myStage){
 
-
+		Date timerStart = new Date();
 
 		Scene scene= new Scene(gridpane, 700, 400);
 		gridpane.setPadding(new Insets(30));
@@ -55,11 +56,12 @@ public class MainGUITest extends Application{
 		ds.setOffsetY(3.0f);
 		ds.setColor(Color.color(0.4f, 0.4f, 0.4f));
 
-		Label credits = new Label("Â© copyright all rights reserved");
+		Label credits = new Label("© copyright all rights reserved");
 		Label credits2 = new Label("Anthony, Daniel, Tyron, Winston ");
 		Label yourWord = new Label("Your word: ");		
 		Label allWordsTitle = new Label("You've found: ");
 		Label Title = new Label("Tyron Tucker");
+		Label dynamicTimeDisplayLabel2 = new Label("");
 		Title.setTextFill(Color.HOTPINK);
 		
 		Title.setFont(Font.font("Curlz MT", FontWeight.BOLD, 40));
@@ -90,9 +92,40 @@ public class MainGUITest extends Application{
 		gridpane.add(allWords, 5, 8);
 		gridpane.add(displayScore, 5, 6);
 		gridpane.add(Title,  5,  0);
+		gridpane.add(dynamicTimeDisplayLabel2, 5, 1);
 		allWords.setMaxWidth(80);
 		bList.clear();
 		
+		//=====================================================
+		Task dynamicTimeTask = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+				
+
+				while (true) {
+					long currentTime = System.currentTimeMillis();
+					updateMessage("Time Remaining: "+(60-((new Date().getTime()/1000)-(timerStart.getTime()/1000))));
+					if((60-((new Date().getTime()/1000)-(timerStart.getTime()/1000)))<0){
+						for(int i = 0; i<=16; i++){
+							getButton(i).setDisable(true);
+						}
+					}
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException ex) {
+						break;
+					}
+				}
+				return null;
+			}
+		};
+		dynamicTimeDisplayLabel2.textProperty().bind(dynamicTimeTask.messageProperty());
+		Thread t2 = new Thread(dynamicTimeTask);
+		t2.setName("Task Time Updater");
+		t2.setDaemon(true);
+		t2.start();
+		//=====================================================
 		
 		Button enterButton = new Button(String.valueOf("Enter"));
 		enterButton.setTextFill(Color.LAWNGREEN);
@@ -166,16 +199,6 @@ public class MainGUITest extends Application{
 	}
 	class EnterButtonHandler implements EventHandler<ActionEvent>{
 		public void handle (ActionEvent e){
-
-			if(rb.isOver()==true){
-				System.out.println("Game Over Man");
-				try {
-					Thread.sleep(100);
-				} catch(InterruptedException ex) {
-					Thread.currentThread().interrupt();
-				}
-				Platform.exit();
-			}
 
 			if(d.isWord(word)==false){
 
