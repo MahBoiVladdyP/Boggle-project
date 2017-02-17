@@ -39,14 +39,14 @@ public class MainGUITest extends Application{
 
 	public void start(Stage myStage){
 
-		
+
 
 		Scene scene= new Scene(gridpane, 700, 400);
 		gridpane.setPadding(new Insets(30));
 		gridpane.setHgap(10);
 		gridpane.setVgap(10);
 
-		myStage.setTitle("Boggle Beta");
+		myStage.setTitle("Free to Play");
 		myStage.setScene(scene);
 		myStage.show();
 		/*Text t = new Text ("Stroke and Fill");
@@ -54,47 +54,55 @@ public class MainGUITest extends Application{
 		DropShadow ds = new DropShadow();
 		ds.setOffsetY(3.0f);
 		ds.setColor(Color.color(0.4f, 0.4f, 0.4f));
-		
+
 		Label credits = new Label("© copyright all rights reserved");
 		Label credits2 = new Label("Anthony, Daniel, Tyron, Winston ");
-		Label displayWordTitle = new Label("Your word: ");		
+		Label yourWord = new Label("Your word: ");		
 		Label allWordsTitle = new Label("You've found: ");
-		Label Title = new Label("Boggle Beta");
-		Title.setTextFill(Color.GREEN);
-		//credits2.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
+		Label Title = new Label("Tyron Tucker");
+		Title.setTextFill(Color.HOTPINK);
+		
 		Title.setFont(Font.font("Curlz MT", FontWeight.BOLD, 40));
 		//Title.setEffect(new GaussianBlur());
 		Title.setEffect(ds);
 		TextField textfield1 = new TextField("");
-		
-		displayWordTitle.setTextFill(Color.BLUE);
-		displayWordTitle.setFont(Font.font("Times New Roman", FontPosture.ITALIC, 20));
-		displayScore.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 20));
+
+		yourWord.setTextFill(Color.BLUE);
+		yourWord.setFont(Font.font("Times New Roman", FontPosture.ITALIC, 50));
+		displayScore.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 30));
 		displayScore.setTextFill(Color.ORANGE);
 		displayWord.setTextFill(Color.BLUEVIOLET);
-		displayWord.setFont(Font.font("Times New Roman", FontWeight.BOLD, 30));
+		displayWord.setFont(Font.font("Times New Roman", FontWeight.BOLD, 40));
+		credits2.setTextFill(Color.DARKBLUE);
+		credits2.setEffect(new GaussianBlur());
+		credits.setTextFill(Color.DARKBLUE);
+		credits.setEffect(new GaussianBlur());
+		allWordsTitle.setTextFill(Color.KHAKI);
+		allWordsTitle.setFont(Font.font("Times New Roman", FontWeight.BOLD, 20));		
+		
 		
 		gridpane.add(credits, 7, 6);
 		gridpane.add(credits2, 7, 7);
-		gridpane.add(displayWordTitle, 7, 1);
-		gridpane.add(displayError, 7, 2);
-		gridpane.add(displayWord, 7, 3);		
+		gridpane.add(yourWord, 7, 1);
+		gridpane.add(displayError, 7, 3);
+		gridpane.add(displayWord, 7, 2);		
 		gridpane.add(allWordsTitle,  5,  7);
 		gridpane.add(allWords, 5, 8);
-		gridpane.add(displayScore, 5, 3);
+		gridpane.add(displayScore, 5, 6);
 		gridpane.add(Title,  5,  0);
 		allWords.setMaxWidth(80);
-		//Random rand = new Random();
 		bList.clear();
-		//Enter button
+		
+		
 		Button enterButton = new Button(String.valueOf("Enter"));
-		gridpane.add(enterButton, 4, 4);
-		//Show words button, used for sake of testing ArrayList
-		/*Button showFoundWords = new Button(String.valueOf("Show Found Words"));
-	       gridpane.add(showFoundWords, 5, 5);*/
-		Button clearWords = new Button(String.valueOf("Clear"));
-		gridpane.add(clearWords,  4, 5);
-
+		enterButton.setTextFill(Color.LAWNGREEN);
+		enterButton.setFont(Font.font("Times New Roman", FontWeight.EXTRA_BOLD, 20));
+		gridpane.add(enterButton, 4, 4);		
+		Button clearButton = new Button(String.valueOf("Clear"));
+		clearButton.setTextFill(Color.RED);
+		clearButton.setFont(Font.font("Times New Roman", FontWeight.EXTRA_BOLD, 20));
+		gridpane.add(clearButton,  4, 5);
+		
 		for (i = 0; i < 4; i++){
 			for (j = 0; j < 4; j++)
 			{
@@ -125,10 +133,10 @@ public class MainGUITest extends Application{
 		}
 		enterButton.setOnAction(new EnterButtonHandler());
 		//showFoundWords.setOnAction(new ShowFoundWordsHandler());
-		clearWords.setOnAction(new ClearWordsHandler());
+		clearButton.setOnAction(new ClearButtonHandler());
 	}
 	private boolean isAdjacent(int currentPosition){//if true, no conflict. if false, button can't be pressed
-		
+
 		spots[0]=lastPlayed-11;//top left corner
 		spots[1]=lastPlayed-1;//straight above
 		spots[2]=lastPlayed+9;//top right corner
@@ -168,14 +176,15 @@ public class MainGUITest extends Application{
 				}
 				Platform.exit();
 			}
-			
+
 			if(d.isWord(word)==false){
 
 				System.out.println("Not A Real Word");
+				displayError.setTextFill(Color.RED);
 				displayError.setText("Not A Real Word");
 				word = "";
 				playedSpots.clear();
-				
+
 				return;
 			}		
 
@@ -196,17 +205,18 @@ public class MainGUITest extends Application{
 					word = "";
 					playedSpots.clear();
 					System.out.println("Word recorded! Nice job!");
+					displayError.setTextFill(Color.GREENYELLOW);
 					displayError.setText("Nice job!");
 					System.out.println("score is:" + score);
 					displayScore.setText("Score: " + Integer.toString(score));
 					String displayWordsString="";
-	  			  	ArrayList<String> returnedWords = new ArrayList<String>();
-	  			  	returnedWords= boggleBoard.returnWords();
-	  			  	for (int k = 0; k<returnedWords.size(); k++){
-	  			  		displayWordsString+=returnedWords.get(k);
-	  			  		displayWordsString+=("\n");
-	  			  	}
-	  			  	allWords.setText(displayWordsString);
+					ArrayList<String> returnedWords = new ArrayList<String>();
+					returnedWords= boggleBoard.returnWords();
+					for (int k = 0; k<returnedWords.size(); k++){
+						displayWordsString+=returnedWords.get(k);
+						displayWordsString+=("\n");
+					}
+					allWords.setText(displayWordsString);
 					word = "";
 					playedSpots.clear();
 					System.out.println("word recorded, find more!");
@@ -214,20 +224,21 @@ public class MainGUITest extends Application{
 				}
 				return;
 			}
-	
-			
+
+
 			if (word.length()<2 || boggleBoard.checkWord(word)==true){
 				System.out.println("word too short or word existing");
+				displayError.setTextFill(Color.RED);
 				displayError.setText("Word too short or already exists!");
 				word = "";
 				playedSpots.clear();
 				return;
 			}
-			
+
 		}
 	}
 
-	class ClearWordsHandler implements EventHandler<ActionEvent>{
+	class ClearButtonHandler implements EventHandler<ActionEvent>{
 		public void handle (ActionEvent e){
 			word = "";
 			System.out.println("word cleared");
@@ -239,8 +250,8 @@ public class MainGUITest extends Application{
 	class ButtonHandler implements EventHandler<ActionEvent>{
 		public void handle(ActionEvent e){
 
-			
-			
+
+
 			Button b = (Button) e.getSource();
 			i=GridPane.getRowIndex(b);
 			j=GridPane.getColumnIndex(b);
@@ -259,14 +270,15 @@ public class MainGUITest extends Application{
 			}
 			else{
 				System.out.println("Illegal Move");
+				displayError.setTextFill(Color.RED);
 				displayError.setText("Illegal Move");
 			}
 		}
 	}
 
-	
+
 	public static void main(String []args){
 		launch(args);
-		
+
 	}
 }
