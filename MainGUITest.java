@@ -56,19 +56,21 @@ public class MainGUITest extends Application{
 		ds.setOffsetY(3.0f);
 		ds.setColor(Color.color(0.4f, 0.4f, 0.4f));
 
-		Label credits = new Label("© copyright all rights reserved");
+		Label credits = new Label("Â© copyright all rights reserved");
 		Label credits2 = new Label("Anthony, Daniel, Tyron, Winston ");
 		Label yourWord = new Label("Your word: ");		
 		Label allWordsTitle = new Label("You've found: ");
 		Label Title = new Label("Tyron Tucker");
 		Label dynamicTimeDisplayLabel2 = new Label("");
-		Title.setTextFill(Color.HOTPINK);
+		Button clearButton = new Button(String.valueOf("Clear"));
+		Button resetButton = new Button(String.valueOf("Reset"));
+		Button enterButton = new Button(String.valueOf("Enter"));
 		
+		//1=====================================================================
+		Title.setTextFill(Color.HOTPINK);
 		Title.setFont(Font.font("Curlz MT", FontWeight.BOLD, 40));
-		//Title.setEffect(new GaussianBlur());
 		Title.setEffect(ds);
 		TextField textfield1 = new TextField("");
-
 		yourWord.setTextFill(Color.BLUE);
 		yourWord.setFont(Font.font("Times New Roman", FontPosture.ITALIC, 50));
 		displayScore.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 30));
@@ -81,8 +83,13 @@ public class MainGUITest extends Application{
 		credits.setEffect(new GaussianBlur());
 		allWordsTitle.setTextFill(Color.KHAKI);
 		allWordsTitle.setFont(Font.font("Times New Roman", FontWeight.BOLD, 20));		
+		enterButton.setTextFill(Color.LAWNGREEN);
+		enterButton.setFont(Font.font("Times New Roman", FontWeight.EXTRA_BOLD, 20));
+		clearButton.setTextFill(Color.RED);
+		clearButton.setFont(Font.font("Times New Roman", FontWeight.EXTRA_BOLD, 20));
+		//1=====================================================================
 		
-		
+		//2=====================================
 		gridpane.add(credits, 7, 6);
 		gridpane.add(credits2, 7, 7);
 		gridpane.add(yourWord, 7, 1);
@@ -93,10 +100,14 @@ public class MainGUITest extends Application{
 		gridpane.add(displayScore, 5, 6);
 		gridpane.add(Title,  5,  0);
 		gridpane.add(dynamicTimeDisplayLabel2, 5, 1);
-		allWords.setMaxWidth(80);
-		bList.clear();
+		gridpane.add(enterButton, 4, 4);
+		gridpane.add(clearButton,  4, 5);
+		gridpane.add(resetButton,  4,  6);
+		//2=======================================
 		
-		//=====================================================
+		allWords.setMaxWidth(80);
+		
+		//3=====================================================
 		Task dynamicTimeTask = new Task<Void>() {
 			@Override
 			protected Void call() throws Exception {
@@ -125,16 +136,9 @@ public class MainGUITest extends Application{
 		t2.setName("Task Time Updater");
 		t2.setDaemon(true);
 		t2.start();
-		//=====================================================
+		//3=====================================================
 		
-		Button enterButton = new Button(String.valueOf("Enter"));
-		enterButton.setTextFill(Color.LAWNGREEN);
-		enterButton.setFont(Font.font("Times New Roman", FontWeight.EXTRA_BOLD, 20));
-		gridpane.add(enterButton, 4, 4);		
-		Button clearButton = new Button(String.valueOf("Clear"));
-		clearButton.setTextFill(Color.RED);
-		clearButton.setFont(Font.font("Times New Roman", FontWeight.EXTRA_BOLD, 20));
-		gridpane.add(clearButton,  4, 5);
+	
 		
 		for (i = 0; i < 4; i++){
 			for (j = 0; j < 4; j++)
@@ -165,8 +169,8 @@ public class MainGUITest extends Application{
 			}
 		}
 		enterButton.setOnAction(new EnterButtonHandler());
-		//showFoundWords.setOnAction(new ShowFoundWordsHandler());
 		clearButton.setOnAction(new ClearButtonHandler());
+		resetButton.setOnAction(new ResetButtonHandler());
 	}
 	private boolean isAdjacent(int currentPosition){//if true, no conflict. if false, button can't be pressed
 
@@ -268,6 +272,11 @@ public class MainGUITest extends Application{
 			playedSpots.clear();
 			displayError.setText("");
 			displayWord.setText("");
+		}
+	}
+	class ResetButtonHandler implements EventHandler<ActionEvent>{
+		public void handle (ActionEvent e){
+			
 		}
 	}
 	class ButtonHandler implements EventHandler<ActionEvent>{
