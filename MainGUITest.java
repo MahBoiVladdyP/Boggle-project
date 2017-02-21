@@ -1,7 +1,6 @@
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Random;
 import javafx.application.*;
 import javafx.concurrent.Task;
 import javafx.scene.*;
@@ -11,11 +10,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.effect.InnerShadow;
 import javafx.event.*;
 import javafx.geometry.*;
 public class MainGUITest extends Application{
@@ -47,20 +44,20 @@ public class MainGUITest extends Application{
 		gridpane.setHgap(10);
 		gridpane.setVgap(10);
 
-		myStage.setTitle("Free to Play");
+		myStage.setTitle("Timothy Corica");
 		myStage.setScene(scene);
+		myStage.setMaximized(true);
 		myStage.show();
-		/*Text t = new Text ("Stroke and Fill");
-		t.setId("fancytext");*/
 		DropShadow ds = new DropShadow();
 		ds.setOffsetY(3.0f);
 		ds.setColor(Color.color(0.4f, 0.4f, 0.4f));
-
+		
+		TextArea forWinston = new TextArea();
 		Label credits = new Label("© copyright all rights reserved");
 		Label credits2 = new Label("Anthony, Daniel, Tyron, Winston ");
 		Label yourWord = new Label("Your word: ");		
 		Label allWordsTitle = new Label("You've found: ");
-		Label Title = new Label("Tyron Tucker");
+		Label Title = new Label("Testa");
 		Label dynamicTimeDisplayLabel2 = new Label("");
 		Button clearButton = new Button(String.valueOf("Clear"));
 		Button resetButton = new Button(String.valueOf("Reset"));
@@ -70,7 +67,6 @@ public class MainGUITest extends Application{
 		Title.setTextFill(Color.HOTPINK);
 		Title.setFont(Font.font("Curlz MT", FontWeight.BOLD, 40));
 		Title.setEffect(ds);
-		TextField textfield1 = new TextField("");
 		yourWord.setTextFill(Color.BLUE);
 		yourWord.setFont(Font.font("Times New Roman", FontPosture.ITALIC, 50));
 		displayScore.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 30));
@@ -78,15 +74,15 @@ public class MainGUITest extends Application{
 		displayWord.setTextFill(Color.BLUEVIOLET);
 		displayWord.setFont(Font.font("Times New Roman", FontWeight.BOLD, 40));
 		credits2.setTextFill(Color.DARKBLUE);
-		credits2.setEffect(new GaussianBlur());
 		credits.setTextFill(Color.DARKBLUE);
-		credits.setEffect(new GaussianBlur());
 		allWordsTitle.setTextFill(Color.KHAKI);
 		allWordsTitle.setFont(Font.font("Times New Roman", FontWeight.BOLD, 20));		
 		enterButton.setTextFill(Color.LAWNGREEN);
 		enterButton.setFont(Font.font("Times New Roman", FontWeight.EXTRA_BOLD, 20));
+	//	enterButton.setMinWidth(80.0);
 		clearButton.setTextFill(Color.RED);
 		clearButton.setFont(Font.font("Times New Roman", FontWeight.EXTRA_BOLD, 20));
+		clearButton.setMinWidth(70.0);
 		//1=====================================================================
 		
 		//2=====================================
@@ -103,6 +99,7 @@ public class MainGUITest extends Application{
 		gridpane.add(enterButton, 4, 4);
 		gridpane.add(clearButton,  4, 5);
 		gridpane.add(resetButton,  4,  6);
+		gridpane.add(forWinston, 7, 8);
 		//2=======================================
 		
 		allWords.setMaxWidth(80);
@@ -139,7 +136,7 @@ public class MainGUITest extends Application{
 		//3=====================================================
 		
 	
-		
+		//initializes buttons
 		for (i = 0; i < 4; i++){
 			for (j = 0; j < 4; j++)
 			{
@@ -211,7 +208,7 @@ public class MainGUITest extends Application{
 				displayError.setText("Not A Real Word");
 				word = "";
 				playedSpots.clear();
-
+				displayWord.setText("");
 				return;
 			}		
 
@@ -231,6 +228,7 @@ public class MainGUITest extends Application{
 					boggleBoard.addWord(word);
 					word = "";
 					playedSpots.clear();
+					displayWord.setText("");
 					System.out.println("Word recorded! Nice job!");
 					displayError.setTextFill(Color.GREENYELLOW);
 					displayError.setText("Nice job!");
