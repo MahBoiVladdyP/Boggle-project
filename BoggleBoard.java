@@ -52,16 +52,20 @@ public class BoggleBoard {
 
 	public boolean onBoard(String word){ 
 		word = word.toUpperCase();
-		String temp = word;
+		String temp = "";
 		for (int i = 0; i < word.length(); i ++){
 			if (i < word.length() - 1){
 				if (word.charAt(i) == 'Q' && word.charAt(i + 1) == 'U'){
 					temp += '$';
 					i ++;
+				} else {
+					temp += word.charAt(i);
 				}
+			} else {
 				temp += word.charAt(i);
 			}
 		}
+		word = temp;
 		for (int i = 0; i < board.length; i ++){
 			for (int j = 0; j < board[i].length; j ++){
 				boolean[][] visited = new boolean[4][4]; 
@@ -114,30 +118,30 @@ public class BoggleBoard {
 		}
 		return adjacent;
 	}
-	
+
 	public char [][] getBoard(){ // return the board
 		return board;
 	}
-	
+
 	public char getLetter(int i, int j){ // get one char form the board
 		return board[i][j];
 	}
-	
+
 	public void addWord(String word){ // add a word to played words
 		words.add(word);
 	}
-	
+
 	public boolean checkWord(String word){ // check if a word has been played
 		if (words.contains(word)){
 			return true;
 		}
 		return false;
 	}
-	
+
 	public ArrayList<String> returnWords(){ //return played words
 		return words;
 	}
-	
+
 	public ArrayList<String> getWords(){ //return all possible words
 		ArrayList<String> output = new ArrayList<>();
 		Dictionary dictionary = new Dictionary();
