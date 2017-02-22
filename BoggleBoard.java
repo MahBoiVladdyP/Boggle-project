@@ -9,7 +9,7 @@ public class BoggleBoard {
 	private char[][] board = new char[4][4];
 	ArrayList<String> words = new ArrayList<>();
 
-	private void makeBoard() {
+	public void makeBoard() {
 		BoggleCubeSet cubeSet = new BoggleCubeSet("BoggleCubes.txt");
 		cubeSet.reset();
 		for (int i = 0; i < 4; i ++){
@@ -17,6 +17,7 @@ public class BoggleBoard {
 				board[i][j] = cubeSet.getCubeLetter();
 			}
 		}
+		words.clear();
 	}
 
 	public void printBoard() {
@@ -144,14 +145,17 @@ public class BoggleBoard {
 
 	public ArrayList<String> getWords(){ //return all possible words
 		ArrayList<String> output = new ArrayList<>();
+		output.add(".");
 		Dictionary dictionary = new Dictionary();
-		String temp = dictionary.getFirst();
+		String temp = dictionary.getFirst().toUpperCase();
 		while (dictionary.hasNext()){
-			if (onBoard(temp) && temp.length() >= 3){
+			if (onBoard(temp) && temp.length() >= 3 && !words.contains(temp)){
 				output.add(temp);
 			}
-			temp = dictionary.getNext();
+			temp = dictionary.getNext().toUpperCase();
 		}
+		String message = "You got: " + words.size() + "/" + (output.size() - 1) + " words";
+		output.set(0, message);
 		return output;
 	}
 }
