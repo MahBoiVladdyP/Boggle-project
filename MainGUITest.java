@@ -52,7 +52,7 @@ public class MainGUITest extends Application{
 		ds.setOffsetY(3.0f);
 		ds.setColor(Color.color(0.4f, 0.4f, 0.4f));
 		
-		TextArea forWinston = new TextArea();
+		TextArea possibleWords = new TextArea();
 		Label credits = new Label("© copyright all rights reserved");
 		Label credits2 = new Label("Anthony, Daniel, Tyron, Winston ");
 		Label yourWord = new Label("Your word: ");		
@@ -99,7 +99,7 @@ public class MainGUITest extends Application{
 		gridpane.add(enterButton, 4, 4);
 		gridpane.add(clearButton,  4, 5);
 		gridpane.add(resetButton,  4,  6);
-		gridpane.add(forWinston, 7, 8);
+		gridpane.add(possibleWords, 7, 8);
 		//2=======================================
 		
 		allWords.setMaxWidth(80);
@@ -114,7 +114,14 @@ public class MainGUITest extends Application{
 				while (true) {
 					long currentTime = System.currentTimeMillis();
 					updateMessage("Time Remaining: "+(60-((new Date().getTime()/1000)-(timerStart.getTime()/1000))));
-					if((60-((new Date().getTime()/1000)-(timerStart.getTime()/1000)))<0){
+					if((60-((new Date().getTime()/1000)-(timerStart.getTime()/1000)))<=0){
+						ArrayList<String> words = boggleBoard.getWords();
+						String possibleWord = "";
+						for (int i = 0; i < words.size(); i ++){
+							possibleWord += words.get(i);
+							possibleWord += "\n";
+						}
+						possibleWords.setText(possibleWord);
 						for(int i = 0; i<=16; i++){
 							getButton(i).setDisable(true);
 						}
