@@ -12,80 +12,80 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.GaussianBlur;
 import javafx.event.*;
 import javafx.geometry.*;
 public class MainGUITest extends Application{
 	int spots [] = new int [8];
 	int lastPlayed=0;
 	String word ="";
-	String temp;
-	int i;
-	int j;
-	Label displayError = new Label("");//display error in GUI
-	Label displayWord = new Label("");//display word in GUI
-	TextArea allWords = new TextArea(""); //display all words in GUI
-	Label displayScore = new Label("");//display score in GUI
-	ArrayList<Integer> playedSpots = new ArrayList<Integer>();//all the played positions
+	int row;
+	int column;
+	Label dynamicTimeDisplayLabel2 = new Label("");
+	Label displayError = new Label("");
+	Label displayWord = new Label("");
+	TextArea allWords = new TextArea(""); 
+	Label displayScore = new Label("");
+	ArrayList<Integer> playedSpots = new ArrayList<Integer>();
 	GridPane gridpane = new GridPane();
 	static ArrayList <Button> bList = new ArrayList<>();
-	ArrayList <String> recordWords = new ArrayList <String>();
 	BoggleBoard boggleBoard = new BoggleBoard();
 	int score  = 0;
 	Dictionary d = new Dictionary();
+	TextArea possibleWords = new TextArea();
+
 
 
 	public void start(Stage myStage){
 
 		Date timerStart = new Date();
 
+		boggleBoard.makeBoard();
+		
 		Scene scene= new Scene(gridpane, 700, 400);
 		gridpane.setPadding(new Insets(30));
 		gridpane.setHgap(10);
 		gridpane.setVgap(10);
 
-		myStage.setTitle("Timothy Corica");
+		myStage.setTitle("Corica");
 		myStage.setScene(scene);
-		myStage.setMaximized(true);
 		myStage.show();
+		myStage.setMaximized(true);
 		DropShadow ds = new DropShadow();
 		ds.setOffsetY(3.0f);
 		ds.setColor(Color.color(0.4f, 0.4f, 0.4f));
 		
-		TextArea possibleWords = new TextArea();
-		Label credits = new Label("Â© copyright all rights reserved");
+
+		Label credits = new Label("© copyright all rights reserved");
 		Label credits2 = new Label("Anthony, Daniel, Tyron, Winston ");
 		Label yourWord = new Label("Your word: ");		
 		Label allWordsTitle = new Label("You've found: ");
-		Label Title = new Label("Testa");
-		Label dynamicTimeDisplayLabel2 = new Label("");
+		Label Title = new Label("Boggle V 1.1");
+		
 		Button clearButton = new Button(String.valueOf("Clear"));
 		Button resetButton = new Button(String.valueOf("Reset"));
 		Button enterButton = new Button(String.valueOf("Enter"));
 		
-		//1=====================================================================
-		Title.setTextFill(Color.HOTPINK);
-		Title.setFont(Font.font("Curlz MT", FontWeight.BOLD, 40));
+		//Set Titles And Fonts==============================================================================
+		Title.setTextFill(Color.DARKBLUE);
+		Title.setFont(Font.font("Times New Roman", FontWeight.NORMAL, 40));
 		Title.setEffect(ds);
-		yourWord.setTextFill(Color.BLUE);
-		yourWord.setFont(Font.font("Times New Roman", FontPosture.ITALIC, 50));
-		displayScore.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, 30));
-		displayScore.setTextFill(Color.ORANGE);
-		displayWord.setTextFill(Color.BLUEVIOLET);
-		displayWord.setFont(Font.font("Times New Roman", FontWeight.BOLD, 40));
+		yourWord.setTextFill(Color.DARKBLUE);
+		yourWord.setFont(Font.font("Times New Roman", FontPosture.REGULAR, 50));
+		displayScore.setFont(Font.font("Verdana", FontWeight.NORMAL, 30));
+		displayScore.setTextFill(Color.DARKBLUE);
+		displayWord.setTextFill(Color.DARKBLUE);
+		displayWord.setFont(Font.font("Times New Roman", FontWeight.NORMAL, 40));
 		credits2.setTextFill(Color.DARKBLUE);
 		credits.setTextFill(Color.DARKBLUE);
-		allWordsTitle.setTextFill(Color.KHAKI);
-		allWordsTitle.setFont(Font.font("Times New Roman", FontWeight.BOLD, 20));		
-		enterButton.setTextFill(Color.LAWNGREEN);
-		enterButton.setFont(Font.font("Times New Roman", FontWeight.EXTRA_BOLD, 20));
-	//	enterButton.setMinWidth(80.0);
-		clearButton.setTextFill(Color.RED);
-		clearButton.setFont(Font.font("Times New Roman", FontWeight.EXTRA_BOLD, 20));
-		clearButton.setMinWidth(70.0);
-		//1=====================================================================
+		allWordsTitle.setTextFill(Color.DARKBLUE);
+		allWordsTitle.setFont(Font.font("Times New Roman", FontWeight.NORMAL, 20));		
+		enterButton.setTextFill(Color.DARKBLUE);
+		enterButton.setFont(Font.font("Times New Roman", FontWeight.NORMAL, 20));
+		clearButton.setTextFill(Color.DARKBLUE);
+		clearButton.setFont(Font.font("Times New Roman", FontWeight.NORMAL, 20));
+		//==================================================================================================
 		
-		//2=====================================
+		//Display Buttons===================================================================================
 		gridpane.add(credits, 7, 6);
 		gridpane.add(credits2, 7, 7);
 		gridpane.add(yourWord, 7, 1);
@@ -100,11 +100,11 @@ public class MainGUITest extends Application{
 		gridpane.add(clearButton,  4, 5);
 		gridpane.add(resetButton,  4,  6);
 		gridpane.add(possibleWords, 7, 8);
-		//2=======================================
+		//=================================================================================================
 		
 		allWords.setMaxWidth(80);
 		
-		//3=====================================================
+		//Timer============================================================================================
 		Task dynamicTimeTask = new Task<Void>() {
 			@Override
 			protected Void call() throws Exception {
@@ -117,7 +117,7 @@ public class MainGUITest extends Application{
 					if((60-((new Date().getTime()/1000)-(timerStart.getTime()/1000)))<=0){
 						ArrayList<String> words = boggleBoard.getWords();
 						String possibleWord = "";
-						for (int i = 0; i < words.size(); i ++){
+						for(int i = 0; i < words.size();i++){
 							possibleWord += words.get(i);
 							possibleWord += "\n";
 						}
@@ -140,31 +140,28 @@ public class MainGUITest extends Application{
 		t2.setName("Task Time Updater");
 		t2.setDaemon(true);
 		t2.start();
-		//3=====================================================
+		//===============================================================================================
 		
 	
-		//initializes buttons
-		for (i = 0; i < 4; i++){
-			for (j = 0; j < 4; j++)
+		
+		for (row = 0; row < 4; row++){
+			for (column = 0; column < 4; column++)
 			{
-				char letter=boggleBoard.getLetter(i, j);//get board from Winston's BoggleBoard
+				char letter=boggleBoard.getLetter(row, column);//get board from Winston's BoggleBoard
 				Button button = new Button(String.valueOf(""));
 				if (letter=='$'){
 					button.setText(String.valueOf("Qu"));
-					button.setTextFill(Color.BLUEVIOLET);
+					button.setTextFill(Color.DARKBLUE);
 					button.setFont(Font.font("Times New Roman", FontWeight.BOLD, 20));
 				}
 				else{
 					button.setText(String.valueOf(letter));
-					button.setTextFill(Color.BLUEVIOLET);
+					button.setTextFill(Color.DARKBLUE);
 					button.setFont(Font.font("Times New Roman", FontWeight.BOLD, 20));
 				}
-				//temp=String.valueOf((char)((rand.nextInt(26)+1) + 64));
-				//char letter=boggleBoard.getLetter(i, j);//get board from Winston's BoggleBoard
-				//Button button = new Button(String.valueOf(temp));
 
 				bList.add(button);
-				gridpane.add(button, i, j+1);
+				gridpane.add(button, row, column+1);
 				button.setMaxWidth(60);
 				button.setMinWidth(60);
 				button.setMinHeight(60);
@@ -176,6 +173,9 @@ public class MainGUITest extends Application{
 		clearButton.setOnAction(new ClearButtonHandler());
 		resetButton.setOnAction(new ResetButtonHandler());
 	}
+	//============================================================ end of start
+	
+	
 	private boolean isAdjacent(int currentPosition){//if true, no conflict. if false, button can't be pressed
 
 		spots[0]=lastPlayed-11;//top left corner
@@ -215,13 +215,12 @@ public class MainGUITest extends Application{
 				displayError.setText("Not A Real Word");
 				word = "";
 				playedSpots.clear();
-				displayWord.setText("");
+
 				return;
 			}		
 
 			if (word.length()>2 && boggleBoard.checkWord(word)==false){
 				if (d.isWord(word)){
-					recordWords.add(word);
 					if(word.length()==3 || word.length()==4)
 						score = score + 1;
 					if(word.length()==5)
@@ -235,9 +234,8 @@ public class MainGUITest extends Application{
 					boggleBoard.addWord(word);
 					word = "";
 					playedSpots.clear();
-					displayWord.setText("");
 					System.out.println("Word recorded! Nice job!");
-					displayError.setTextFill(Color.GREENYELLOW);
+					displayError.setTextFill(Color.BLUE);
 					displayError.setText("Nice job!");
 					System.out.println("score is:" + score);
 					displayScore.setText("Score: " + Integer.toString(score));
@@ -281,7 +279,90 @@ public class MainGUITest extends Application{
 	}
 	class ResetButtonHandler implements EventHandler<ActionEvent>{
 		public void handle (ActionEvent e){
+			score = 0;
+			displayScore.setText("Score: " + Integer.toString(score));
+			playedSpots.clear();
+			word = "";
+			bList.clear();
+			//=============================================
+			boggleBoard.returnWords().clear();
+			String displayWordsString="";
+			ArrayList<String> returnedWords = new ArrayList<String>();
+			returnedWords= boggleBoard.returnWords();
+			for (int k = 0; k<returnedWords.size(); k++){
+				displayWordsString+=returnedWords.get(k);
+				displayWordsString+=("\n");
+			}
+			allWords.setText(displayWordsString);
+			//============================================
 			
+			boggleBoard.makeBoard();
+			
+			for (row = 0; row < 4; row++){
+				for (column = 0; column < 4; column++)
+				{
+					char letter=boggleBoard.getLetter(row, column);//get board from Winston's BoggleBoard
+					Button button = new Button(String.valueOf(""));
+					if (letter=='$'){
+						button.setText(String.valueOf("Qu"));
+						button.setTextFill(Color.BLUEVIOLET);
+						button.setFont(Font.font("Times New Roman", FontWeight.BOLD, 20));
+					}
+					else{
+						button.setText(String.valueOf(letter));
+						button.setTextFill(Color.BLUEVIOLET);
+						button.setFont(Font.font("Times New Roman", FontWeight.BOLD, 20));
+					}
+
+					bList.add(button);
+					gridpane.add(button, row, column+1);
+					button.setMaxWidth(60);
+					button.setMinWidth(60);
+					button.setMinHeight(60);
+					button.setMaxHeight(60);
+					button.setOnAction(new ButtonHandler());
+				}
+			}
+			
+			//Timer============================================================================================
+			Date timerStart = new Date();
+			Task dynamicTimeTask = new Task<Void>() {
+				@Override
+				protected Void call() throws Exception {
+					SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+					
+
+					while (true) {
+						long currentTime = System.currentTimeMillis();
+						updateMessage("Time Remaining: "+(60-((new Date().getTime()/1000)-(timerStart.getTime()/1000))));
+						if((60-((new Date().getTime()/1000)-(timerStart.getTime()/1000)))<=0){
+							ArrayList<String> words = boggleBoard.getWords();
+							String possibleWord = "";
+							for(int i = 0; i < words.size();i++){
+								possibleWord += words.get(i);
+								possibleWord += "\n";
+							}
+							possibleWords.setText(possibleWord);
+							for(int i = 0; i<=16; i++){
+								getButton(i).setDisable(true);
+							}
+						}
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException ex) {
+							break;
+						}
+					}
+					return null;
+				}
+			};
+			dynamicTimeDisplayLabel2.textProperty().bind(dynamicTimeTask.messageProperty());
+			Thread t2 = new Thread(dynamicTimeTask);
+			t2.setName("Task Time Updater");
+			t2.setDaemon(true);
+			t2.start();
+			//===============================================================================================
+possibleWords.clear();
 		}
 	}
 	class ButtonHandler implements EventHandler<ActionEvent>{
@@ -290,10 +371,10 @@ public class MainGUITest extends Application{
 
 
 			Button b = (Button) e.getSource();
-			i=GridPane.getRowIndex(b);
-			j=GridPane.getColumnIndex(b);
+			row=GridPane.getRowIndex(b);
+			column=GridPane.getColumnIndex(b);
 
-			int currentPosition=(i * 10) + j;
+			int currentPosition=(row * 10) + column;
 			System.out.println("currentPosition = " + currentPosition);
 			if (isAdjacent(currentPosition)==true && !playedSpots.contains(currentPosition)){
 
