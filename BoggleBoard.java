@@ -8,7 +8,6 @@ public class BoggleBoard {
 
 	private char[][] board = new char[4][4];
 	ArrayList<String> words = new ArrayList<>();
-	int numAllWords;
 	
 	public void makeBoard() {
 		BoggleCubeSet cubeSet = new BoggleCubeSet("BoggleCubes.txt");
@@ -152,16 +151,14 @@ public class BoggleBoard {
 		while (dictionary.hasNext()){
 			if (onBoard(temp) && temp.length() >= 3 && !words.contains(temp)){
 				output.add(temp);
-				numAllWords++;
+				
 			}
 			temp = dictionary.getNext().toUpperCase();
 		}
-		String message = "You got: " + words.size() + "/" + (output.size() - 1) + " words";
+		double percentage = words.size()/(double)output.size()*100;
+		percentage = Math.round(percentage * 100)/100;
+		String message = "You got: " + words.size() + "/" + (output.size() - 1) + " words: " + percentage + "%";
 		output.set(0, message);
 		return output;
-	}
-	public double getPercentage(){
-		double percentage = words.size()/(double)numAllWords;
-		return percentage;
 	}
 }
