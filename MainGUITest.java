@@ -32,15 +32,18 @@ public class MainGUITest extends Application{
 	int score  = 0;
 	Dictionary d = new Dictionary();
 	TextArea possibleWords = new TextArea();
-
+	boolean stopTimer = false;
+	Thread t2;
+	BoggleTimer dynamicTimeTask;
+	MainGUITest me;
 
 
 	public void start(Stage myStage){
 
-		Date timerStart = new Date();
-
+		//		Date timerStart = new Date();
+		me = this;
 		boggleBoard.makeBoard();
-		
+
 		Scene scene= new Scene(gridpane, 700, 400);
 		gridpane.setPadding(new Insets(30));
 		gridpane.setHgap(10);
@@ -53,18 +56,18 @@ public class MainGUITest extends Application{
 		DropShadow ds = new DropShadow();
 		ds.setOffsetY(3.0f);
 		ds.setColor(Color.color(0.4f, 0.4f, 0.4f));
-		
 
-		Label credits = new Label("Â© copyright all rights reserved");
+
+		Label credits = new Label("© copyright all rights reserved");
 		Label credits2 = new Label("Anthony, Daniel, Tyron, Winston ");
 		Label yourWord = new Label("Your word: ");		
 		Label allWordsTitle = new Label("You've found: ");
-		Label Title = new Label("Boggle V 1.1");
-		
+		Label Title = new Label("Boggle V 1.2");
+
 		Button clearButton = new Button(String.valueOf("Clear"));
-		Button resetButton = new Button(String.valueOf("Reset"));
+		Button resetButton = new Button(String.valueOf("New Game"));
 		Button enterButton = new Button(String.valueOf("Enter"));
-		
+
 		//Set Titles And Fonts==============================================================================
 		Title.setTextFill(Color.DARKBLUE);
 		Title.setFont(Font.font("Times New Roman", FontWeight.NORMAL, 40));
@@ -83,12 +86,8 @@ public class MainGUITest extends Application{
 		enterButton.setFont(Font.font("Times New Roman", FontWeight.NORMAL, 20));
 		clearButton.setTextFill(Color.DARKBLUE);
 		clearButton.setFont(Font.font("Times New Roman", FontWeight.NORMAL, 20));
-		//Set Button Sizes (if needed)==================================================================================================
-		Title.setMinWidth(225);
-		Title.setMaxWidth(225);
-		enterButton.setMinWidth(75);
-		
-		allWords.setMaxWidth(80);
+		//==================================================================================================
+
 		//Display Buttons===================================================================================
 		gridpane.add(credits, 7, 6);
 		gridpane.add(credits2, 7, 7);
@@ -105,50 +104,20 @@ public class MainGUITest extends Application{
 		gridpane.add(resetButton,  4,  6);
 		gridpane.add(possibleWords, 7, 8);
 		//=================================================================================================
-		
-		
-		
-		
-		//Timer============================================================================================
-		Task dynamicTimeTask = new Task<Void>() {
-			@Override
-			protected Void call() throws Exception {
-				SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-				
 
-				while (true) {
-					long currentTime = System.currentTimeMillis();
-					updateMessage("Time Remaining: "+(60-((new Date().getTime()/1000)-(timerStart.getTime()/1000))));
-					if((60-((new Date().getTime()/1000)-(timerStart.getTime()/1000)))<=0){
-						ArrayList<String> words = boggleBoard.getWords();
-						String possibleWord = "";
-						for(int i = 0; i < words.size();i++){
-							possibleWord += words.get(i);
-							possibleWord += "\n";
-						}
-						possibleWords.setText(possibleWord);
-						for(int i = 0; i<=16; i++){
-							getButton(i).setDisable(true);
-						}
-					}
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException ex) {
-						break;
-					}
-				}
-				return null;
-			}
-		};
-		dynamicTimeDisplayLabel2.textProperty().bind(dynamicTimeTask.messageProperty());
-		Thread t2 = new Thread(dynamicTimeTask);
+		allWords.setMaxWidth(80);
+
+		//Timer============================================================================================
+		dynamicTimeTask = new BoggleTimer(me);
+		t2 = new Thread(dynamicTimeTask);
 		t2.setName("Task Time Updater");
 		t2.setDaemon(true);
 		t2.start();
-		//===============================================================================================
-		
-	
-		
+		dynamicTimeDisplayLabel2.textProperty().bind(dynamicTimeTask.messageProperty());
+		//=================================================================================================
+
+
+
 		for (row = 0; row < 4; row++){
 			for (column = 0; column < 4; column++)
 			{
@@ -179,8 +148,22 @@ public class MainGUITest extends Application{
 		resetButton.setOnAction(new ResetButtonHandler());
 	}
 	//============================================================ end of start
-	
-	
+
+	public void freeze()
+	{
+		ArrayList<String> words = boggleBoard.getWords();
+		String possibleWord = "";
+		for(int i = 0; i < words.size();i++){
+			possibleWord += words.get(i);
+			possibleWord += "\n";
+		}
+		possibleWords.setText(possibleWord);
+		for(int i = 0; i<=16; i++){
+			getButton(i).setDisable(true);
+		}
+
+	}
+
 	private boolean isAdjacent(int currentPosition){//if true, no conflict. if false, button can't be pressed
 
 		spots[0]=lastPlayed-11;//top left corner
@@ -240,7 +223,7 @@ public class MainGUITest extends Application{
 					word = "";
 					playedSpots.clear();
 					System.out.println("Word recorded! Nice job!");
-					displayError.setTextFill(Color.BLUE);
+					displayError.setTextFill(Color.DARKBLUE);
 					displayError.setText("Nice job!");
 					System.out.println("score is:" + score);
 					displayScore.setText("Score: " + Integer.toString(score));
@@ -278,17 +261,21 @@ public class MainGUITest extends Application{
 			word = "";
 			System.out.println("word cleared");
 			playedSpots.clear();
+			possibleWords.setText("");
 			displayError.setText("");
 			displayWord.setText("");
 		}
 	}
 	class ResetButtonHandler implements EventHandler<ActionEvent>{
 		public void handle (ActionEvent e){
-			score = 0;
-			displayScore.setText("Score: " + Integer.toString(score));
 			playedSpots.clear();
 			word = "";
-			bList.clear();
+			score = 0;
+			possibleWords.setText("");;
+			allWords.setText("");
+			displayError.setText("");
+			displayWord.setText("");;
+			displayScore.setText("Score: " + Integer.toString(score));
 			//=============================================
 			boggleBoard.returnWords().clear();
 			String displayWordsString="";
@@ -300,74 +287,37 @@ public class MainGUITest extends Application{
 			}
 			allWords.setText(displayWordsString);
 			//============================================
-			
+
 			boggleBoard.makeBoard();
-			
+
 			for (row = 0; row < 4; row++){
 				for (column = 0; column < 4; column++)
 				{
 					char letter=boggleBoard.getLetter(row, column);//get board from Winston's BoggleBoard
-					Button button = new Button(String.valueOf(""));
+					Button button = bList.get(row*4+column);//new Button(String.valueOf(""));
+					button.setDisable(false);
 					if (letter=='$'){
 						button.setText(String.valueOf("Qu"));
-						button.setTextFill(Color.BLUEVIOLET);
+						button.setTextFill(Color.DARKBLUE);
 						button.setFont(Font.font("Times New Roman", FontWeight.BOLD, 20));
 					}
 					else{
 						button.setText(String.valueOf(letter));
-						button.setTextFill(Color.BLUEVIOLET);
+						button.setTextFill(Color.DARKBLUE);
 						button.setFont(Font.font("Times New Roman", FontWeight.BOLD, 20));
 					}
-
-					bList.add(button);
-					gridpane.add(button, row, column+1);
-					button.setMaxWidth(60);
-					button.setMinWidth(60);
-					button.setMinHeight(60);
-					button.setMaxHeight(60);
-					button.setOnAction(new ButtonHandler());
 				}
 			}
-			
-			//Timer============================================================================================
-			Date timerStart = new Date();
-			Task dynamicTimeTask = new Task<Void>() {
-				@Override
-				protected Void call() throws Exception {
-					SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-					
-
-					while (true) {
-						long currentTime = System.currentTimeMillis();
-						updateMessage("Time Remaining: "+(60-((new Date().getTime()/1000)-(timerStart.getTime()/1000))));
-						if((60-((new Date().getTime()/1000)-(timerStart.getTime()/1000)))<=0){
-							ArrayList<String> words = boggleBoard.getWords();
-							String possibleWord = "";
-							for(int i = 0; i < words.size();i++){
-								possibleWord += words.get(i);
-								possibleWord += "\n";
-							}
-							possibleWords.setText(possibleWord);
-							for(int i = 0; i<=16; i++){
-								getButton(i).setDisable(true);
-							}
-						}
-						try {
-							Thread.sleep(100);
-						} catch (InterruptedException ex) {
-							break;
-						}
-					}
-					return null;
-				}
-			};
-			dynamicTimeDisplayLabel2.textProperty().bind(dynamicTimeTask.messageProperty());
-			Thread t2 = new Thread(dynamicTimeTask);
+			dynamicTimeTask = new BoggleTimer(me);
+			t2 = new Thread(dynamicTimeTask);
 			t2.setName("Task Time Updater");
 			t2.setDaemon(true);
 			t2.start();
-			//===============================================================================================
-possibleWords.clear();
+			dynamicTimeDisplayLabel2.textProperty().bind(dynamicTimeTask.messageProperty());
+
+
+
+
 		}
 	}
 	class ButtonHandler implements EventHandler<ActionEvent>{
