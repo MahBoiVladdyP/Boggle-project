@@ -308,6 +308,7 @@ public class MainGUITest extends Application{
 					}
 				}
 			}
+			dynamicTimeTask.stopMe();
 			dynamicTimeTask = new BoggleTimer(me);
 			t2 = new Thread(dynamicTimeTask);
 			t2.setName("Task Time Updater");

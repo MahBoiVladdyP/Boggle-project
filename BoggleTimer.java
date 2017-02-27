@@ -10,6 +10,7 @@ public class BoggleTimer  extends Task<Void>{
 	int time = 60;
 	Date timerStart;
 	MainGUITest myMain;
+	boolean stopped = false;
 
 	BoggleTimer(MainGUITest mgt)
 	{
@@ -17,9 +18,13 @@ public class BoggleTimer  extends Task<Void>{
 		timerStart = new Date();
 		myMain = mgt;
 	}
+	
+	public void stopMe(){
+		stopped = true;
+	}
 
 	protected Void call() throws Exception {
-		while (true) {
+		while (true && !stopped) {
 			updateMessage("Time Remaining: "+(time-((new Date().getTime()/1000)-(timerStart.getTime()/1000))));
 			if((time-((new Date().getTime()/1000)-(timerStart.getTime()/1000)))<=0){
 				myMain.freeze();
