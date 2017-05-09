@@ -63,7 +63,7 @@ public class MainGUITest extends Application{
 		Label yourWord = new Label("Your word: ");		
 		Label allWordsTitle = new Label("You've found: ");
 		Label Title = new Label("Boggle V 1.2");
-		Label Instructions = new Label("Instructions here");
+		Label Instructions = new Label("Make words from the letters given." + "\n\n" + "Letters must be adjacent and can't be used more than once." + "\n\n" + "Press enter to submit a word and press clear to clear the current word.");
 		
 		Button clearButton = new Button(String.valueOf("Clear"));
 		Button resetButton = new Button(String.valueOf("New Game"));
@@ -88,6 +88,7 @@ public class MainGUITest extends Application{
 		clearButton.setTextFill(Color.DARKBLUE);
 		clearButton.setFont(Font.font("Times New Roman", FontWeight.NORMAL, 20));
 		Instructions.setTextFill(Color.DARKBLUE);
+		Instructions.setFont(Font.font("Times New Roman",FontWeight.NORMAL, 15));
 		possibleWords.setMaxSize(250, 150);
 		resetButton.setTextFill(Color.DARKBLUE);
 		resetButton.setFont(Font.font("Times New Roman", FontWeight.NORMAL, 20));
