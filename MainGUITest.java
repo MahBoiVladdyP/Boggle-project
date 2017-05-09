@@ -58,12 +58,13 @@ public class MainGUITest extends Application{
 		ds.setColor(Color.color(0.4f, 0.4f, 0.4f));
 
 
-		Label credits = new Label("© copyright all rights reserved");
+		Label credits = new Label("Â© copyright all rights reserved");
 		Label credits2 = new Label("Anthony, Daniel, Tyron, Winston ");
 		Label yourWord = new Label("Your word: ");		
 		Label allWordsTitle = new Label("You've found: ");
 		Label Title = new Label("Boggle V 1.2");
-
+		Label Instructions = new Label("Instructions here");
+		
 		Button clearButton = new Button(String.valueOf("Clear"));
 		Button resetButton = new Button(String.valueOf("New Game"));
 		Button enterButton = new Button(String.valueOf("Enter"));
@@ -86,6 +87,10 @@ public class MainGUITest extends Application{
 		enterButton.setFont(Font.font("Times New Roman", FontWeight.NORMAL, 20));
 		clearButton.setTextFill(Color.DARKBLUE);
 		clearButton.setFont(Font.font("Times New Roman", FontWeight.NORMAL, 20));
+		Instructions.setTextFill(Color.DARKBLUE);
+		possibleWords.setMaxSize(250, 150);
+		resetButton.setTextFill(Color.DARKBLUE);
+		resetButton.setFont(Font.font("Times New Roman", FontWeight.NORMAL, 20));
 		//==================================================================================================
 
 		//Display Buttons===================================================================================
@@ -103,6 +108,7 @@ public class MainGUITest extends Application{
 		gridpane.add(clearButton,  4, 5);
 		gridpane.add(resetButton,  4,  6);
 		gridpane.add(possibleWords, 7, 8);
+		gridpane.add(Instructions,  8, 6);
 		//=================================================================================================
 
 		allWords.setMaxWidth(80);
@@ -124,7 +130,7 @@ public class MainGUITest extends Application{
 				char letter=boggleBoard.getLetter(row, column);//get board from Winston's BoggleBoard
 				Button button = new Button(String.valueOf(""));
 				if (letter=='$'){
-					button.setText(String.valueOf("Qu"));
+					button.setText(String.valueOf("QU"));
 					button.setTextFill(Color.DARKBLUE);
 					button.setFont(Font.font("Times New Roman", FontWeight.BOLD, 20));
 				}
@@ -209,16 +215,18 @@ public class MainGUITest extends Application{
 
 			if (word.length()>2 && boggleBoard.checkWord(word)==false){
 				if (d.isWord(word)){
-					if(word.length()==3 || word.length()==4)
+					if(word.length()==3)
 						score = score + 1;
-					if(word.length()==5)
+					if(word.length()==4)
 						score = score + 2;
+					if(word.length()==5)
+						score = score + 4;
 					if(word.length()==6)
-						score = score + 3;
+						score = score + 6;
 					if(word.length()==7)
-						score = score + 5;
+						score = score + 10;
 					if(word.length()>=8)
-						score = score + 11;
+						score = score + 15;
 					boggleBoard.addWord(word);
 					word = "";
 					playedSpots.clear();
@@ -297,7 +305,7 @@ public class MainGUITest extends Application{
 					Button button = bList.get(row*4+column);//new Button(String.valueOf(""));
 					button.setDisable(false);
 					if (letter=='$'){
-						button.setText(String.valueOf("Qu"));
+						button.setText(String.valueOf("QU"));
 						button.setTextFill(Color.DARKBLUE);
 						button.setFont(Font.font("Times New Roman", FontWeight.BOLD, 20));
 					}
@@ -315,10 +323,6 @@ public class MainGUITest extends Application{
 			t2.setDaemon(true);
 			t2.start();
 			dynamicTimeDisplayLabel2.textProperty().bind(dynamicTimeTask.messageProperty());
-
-
-
-
 		}
 	}
 	class ButtonHandler implements EventHandler<ActionEvent>{
