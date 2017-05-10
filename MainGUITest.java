@@ -14,6 +14,8 @@ import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.event.*;
 import javafx.geometry.*;
+import java.lang.Object;
+import javafx.stage.Screen;
 
 public class MainGUITest extends Application{
 	int spots [] = new int [8];
