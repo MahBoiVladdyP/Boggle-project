@@ -16,6 +16,7 @@ import javafx.event.*;
 import javafx.geometry.*;
 import java.lang.Object;
 import javafx.stage.Screen;
+import javafx.geometry.Rectangle2D;
 
 public class MainGUITest extends Application{
 	int spots [] = new int [8];
@@ -52,6 +53,7 @@ public class MainGUITest extends Application{
 		gridpane.setPadding(new Insets(30));
 		gridpane.setHgap(10);
 		gridpane.setVgap(10);
+        myStage.setScene(scene);
 
 		myStage.setTitle("Corica");
 		myStage.setScene(scene);
