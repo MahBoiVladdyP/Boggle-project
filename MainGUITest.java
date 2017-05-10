@@ -53,18 +53,16 @@ public class MainGUITest extends Application{
 		gridpane.setPadding(new Insets(30));
 		gridpane.setHgap(10);
 		gridpane.setVgap(10);
-        myStage.setScene(scene);
 
 		myStage.setTitle("Corica");
 		myStage.setScene(scene);
 		myStage.show();
-		myStage.setMaximized(true);
+		myStage.setMaximized(false);
 		myStage.setX(primaryScreenBounds.getMinX());
 		myStage.setY(primaryScreenBounds.getMinY());
 		myStage.setWidth(primaryScreenBounds.getWidth());
 		myStage.setHeight(primaryScreenBounds.getHeight());
 
-		myStage.show();
 		 
 		DropShadow ds = new DropShadow();
 		ds.setOffsetY(3.0f);
