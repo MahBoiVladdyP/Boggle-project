@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.event.*;
 import javafx.geometry.*;
+
 public class MainGUITest extends Application{
 	int spots [] = new int [8];
 	int lastPlayed=0;
@@ -36,10 +37,11 @@ public class MainGUITest extends Application{
 	Thread t2;
 	BoggleTimer dynamicTimeTask;
 	MainGUITest me;
+	Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 
 
 	public void start(Stage myStage){
-
+				
 		//		Date timerStart = new Date();
 		me = this;
 		boggleBoard.makeBoard();
@@ -53,6 +55,13 @@ public class MainGUITest extends Application{
 		myStage.setScene(scene);
 		myStage.show();
 		myStage.setMaximized(true);
+		myStage.setX(primaryScreenBounds.getMinX());
+		myStage.setY(primaryScreenBounds.getMinY());
+		myStage.setWidth(primaryScreenBounds.getWidth());
+		myStage.setHeight(primaryScreenBounds.getHeight());
+
+		myStage.show();
+		 
 		DropShadow ds = new DropShadow();
 		ds.setOffsetY(3.0f);
 		ds.setColor(Color.color(0.4f, 0.4f, 0.4f));
@@ -63,7 +72,7 @@ public class MainGUITest extends Application{
 		Label yourWord = new Label("Your word: ");		
 		Label allWordsTitle = new Label("You've found: ");
 		Label Title = new Label("Boggle V 1.2");
-		Label Instructions = new Label("Make words from the letters given." + "\n\n" + "Letters must be adjacent and can't be used more than once." + "\n\n" + "Press enter to submit a word and press clear to clear the current word.");
+		Label Instructions = new Label("Create words from the letters given." + "\n\n" + "Letters must be adjacent and can't be used more than once." + "\n\n" + "Press enter to submit a word and press clear to clear the current word.");
 		
 		Button clearButton = new Button(String.valueOf("Clear"));
 		Button resetButton = new Button(String.valueOf("New Game"));
