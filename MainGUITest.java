@@ -53,15 +53,14 @@ public class MainGUITest extends Application{
 		gridpane.setPadding(new Insets(30));
 		gridpane.setHgap(10);
 		gridpane.setVgap(10);
-
-		myStage.setTitle("Corica");
-		myStage.setScene(scene);
-		myStage.show();
-		myStage.setMaximized(false);
 		myStage.setX(primaryScreenBounds.getMinX());
 		myStage.setY(primaryScreenBounds.getMinY());
 		myStage.setWidth(primaryScreenBounds.getWidth());
 		myStage.setHeight(primaryScreenBounds.getHeight());
+		myStage.setTitle("Corica");
+		myStage.setScene(scene);
+		myStage.show();
+		
 
 		 
 		DropShadow ds = new DropShadow();
@@ -74,11 +73,13 @@ public class MainGUITest extends Application{
 		Label yourWord = new Label("Your word: ");		
 		Label allWordsTitle = new Label("You've found: ");
 		Label Title = new Label("Boggle V 1.2");
-		Label Instructions = new Label("Create words from the letters given." + "\n\n" + "Letters must be adjacent and can't be used more than once." + "\n\n" + "Press enter to submit a word and press clear to clear the current word.");
-		
+		Label Instructions = new Label("Instructions:" + "\n\n" + "Create words from the letters given." + "\n\n" + "Letters must be adjacent and can't be used more than once." + "\n\n" + "Press enter to submit a word and press clear to clear the current word.");
+		credits.setMinWidth(Region.USE_PREF_SIZE);
+
 		Button clearButton = new Button(String.valueOf("Clear"));
 		Button resetButton = new Button(String.valueOf("New Game"));
 		Button enterButton = new Button(String.valueOf("Enter"));
+		
 
 		//Set Titles And Fonts==============================================================================
 		Title.setTextFill(Color.DARKBLUE);
@@ -120,7 +121,7 @@ public class MainGUITest extends Application{
 		gridpane.add(clearButton,  4, 5);
 		gridpane.add(resetButton,  4,  6);
 		gridpane.add(possibleWords, 7, 8);
-		gridpane.add(Instructions,  8, 6);
+		gridpane.add(Instructions,  8, 8);
 		//=================================================================================================
 
 		allWords.setMaxWidth(80);
