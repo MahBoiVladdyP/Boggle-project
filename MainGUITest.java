@@ -72,9 +72,14 @@ public class MainGUITest extends Application{
 		Label credits2 = new Label("Anthony, Daniel, Tyron, Winston ");
 		Label yourWord = new Label("Your word: ");		
 		Label allWordsTitle = new Label("You've found: ");
-		Label Title = new Label("Boggle V 1.2");
+		Label Title = new Label("Boggle V 3.0");	
 		Label Instructions = new Label("Instructions:" + "\n\n" + "Create words from the letters given." + "\n\n" + "Letters must be adjacent and can't be used more than once." + "\n\n" + "Press enter to submit a word and press clear to clear the current word.");
-		credits.setMinWidth(Region.USE_PREF_SIZE);
+		Title.setMinWidth(Region.USE_PREF_SIZE);
+		Title.setMinHeight(Region.USE_PREF_SIZE);
+		yourWord.setMinWidth(Region.USE_PREF_SIZE);
+		yourWord.setMinHeight(Region.USE_PREF_SIZE);
+		Instructions.setMinWidth(Region.USE_PREF_SIZE);
+		Instructions.setMinHeight(Region.USE_PREF_SIZE);
 
 		Button clearButton = new Button(String.valueOf("Clear"));
 		Button resetButton = new Button(String.valueOf("New Game"));
@@ -93,35 +98,47 @@ public class MainGUITest extends Application{
 		displayWord.setFont(Font.font("Times New Roman", FontWeight.NORMAL, 40));
 		credits2.setTextFill(Color.DARKBLUE);
 		credits.setTextFill(Color.DARKBLUE);
+		credits.setMinWidth(Region.USE_PREF_SIZE);
+		credits.setMinHeight(Region.USE_PREF_SIZE);
+		credits2.setMinWidth(Region.USE_PREF_SIZE);
+		credits2.setMinHeight(Region.USE_PREF_SIZE);
 		allWordsTitle.setTextFill(Color.DARKBLUE);
-		allWordsTitle.setFont(Font.font("Times New Roman", FontWeight.NORMAL, 20));		
+		allWordsTitle.setFont(Font.font("Times New Roman", FontWeight.NORMAL, 20));
+		allWordsTitle.setMinWidth(Region.USE_PREF_SIZE);
+		allWordsTitle.setMinHeight(Region.USE_PREF_SIZE);
 		enterButton.setTextFill(Color.DARKBLUE);
 		enterButton.setFont(Font.font("Times New Roman", FontWeight.NORMAL, 20));
+		enterButton.setMinWidth(Region.USE_PREF_SIZE);
+		enterButton.setMinHeight(Region.USE_PREF_SIZE);
 		clearButton.setTextFill(Color.DARKBLUE);
 		clearButton.setFont(Font.font("Times New Roman", FontWeight.NORMAL, 20));
+		clearButton.setMinWidth(Region.USE_PREF_SIZE);
+		clearButton.setMinHeight(Region.USE_PREF_SIZE);
 		Instructions.setTextFill(Color.DARKBLUE);
 		Instructions.setFont(Font.font("Times New Roman",FontWeight.NORMAL, 15));
 		possibleWords.setMaxSize(250, 150);
 		resetButton.setTextFill(Color.DARKBLUE);
 		resetButton.setFont(Font.font("Times New Roman", FontWeight.NORMAL, 20));
+		resetButton.setMinWidth(Region.USE_PREF_SIZE);
+		resetButton.setMinHeight(Region.USE_PREF_SIZE);
 		//==================================================================================================
 
 		//Display Buttons===================================================================================
-		gridpane.add(credits, 7, 6);
-		gridpane.add(credits2, 7, 7);
-		gridpane.add(yourWord, 7, 1);
-		gridpane.add(displayError, 7, 3);
-		gridpane.add(displayWord, 7, 2);		
-		gridpane.add(allWordsTitle,  5,  7);
-		gridpane.add(allWords, 5, 8);
-		gridpane.add(displayScore, 5, 6);
+		gridpane.add(credits, 5, 6);
+		gridpane.add(credits2, 5, 7);
+		gridpane.add(yourWord, 6, 1);
+		gridpane.add(displayError, 6, 3);
+		gridpane.add(displayWord, 6, 2);		
+		gridpane.add(allWordsTitle,  4,  7);
+		gridpane.add(allWords, 4, 8);
+		gridpane.add(displayScore, 5, 5);
 		gridpane.add(Title,  5,  0);
 		gridpane.add(dynamicTimeDisplayLabel2, 5, 1);
 		gridpane.add(enterButton, 4, 4);
 		gridpane.add(clearButton,  4, 5);
 		gridpane.add(resetButton,  4,  6);
-		gridpane.add(possibleWords, 7, 8);
-		gridpane.add(Instructions,  8, 8);
+		gridpane.add(possibleWords, 5, 8);
+		gridpane.add(Instructions,  6, 8);
 		//=================================================================================================
 
 		allWords.setMaxWidth(80);
